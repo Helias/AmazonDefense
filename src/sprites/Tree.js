@@ -1,7 +1,8 @@
-export default class Player {
+export default class Tree {
+    constructor(ctx, x, y, depth, initialSprite) {
+        this.sprite = ctx.add.sprite(x, y, `${initialSprite}`)
+        this.sprite.depth = depth
 
-    constructor(game, x, y, initialSprite) {
-        this.sprite = game.add.sprite(120, 120, `${initialSprite}`)
     }
 
     playAnim(animId) {

@@ -2,7 +2,10 @@ import {clamp, coordinates} from '../utils'
 
 export default class Player {
     constructor(ctx, x, y, initialSprite) {
-        this.sprite = ctx.add.sprite(256, 256, `${initialSprite}`)        
+        this.sprite = ctx.add.sprite(x, y, `${initialSprite}`)        
+
+        this.sprite.scaleX = 0.2
+        this.sprite.scaleY = 0.2
 
         this.minCoords = coordinates(0.1, 0.2)
         this.maxCoords = coordinates(0.9, 0.7)

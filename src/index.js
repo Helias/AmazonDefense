@@ -2,6 +2,7 @@ import Phaser from "phaser";
 import Player from "./sprites/Player";
 import Tree from "./sprites/Tree"; 
 import { SETTINGS } from './settings'
+import { coordinates } from "./utils";
 
 console.log(SETTINGS)
 
@@ -59,15 +60,34 @@ function preload() {
   loadAnimationSprites(this, "tree", "idle", 1)
 }
 
+
+function initTrees(ctx, count) {
+  let minPos = coordinates(0.02, 0.7)
+  let maxPos = coordinates(0.98, 0.9)
+
+  for(let i=0; i<count; ++i) {
+    let x = Math.random() * (maxPos.x - minPos.x) + minPos.x
+    let y = Math.random() * (maxPos.y - minPos.y) + minPos.y
+
+    console.log(`${x} ${y}`)
+
+    let tree = new Tree(ctx, x, y, y, "tree_idle_0")
+    tree.playAnim('tree_idle')
+
+    ctx.trees.push(tree)
+  }
+}
+
 function create() {
   registerAnimation(this, "player", "idle", 11)
   registerAnimation(this, "tree", "idle", 1)
 
   this.player = new Player(this, 256, 256, "player_idle_0")
-  this.tree = new Tree(this, 10, 10, "tree_idle_0")
-
   this.player.playAnim('player_idle')
-  this.tree.playAnim('tree_idle')
+
+  this.trees = []
+
+  initTrees(this, 25)
 }
 
 function update() {
