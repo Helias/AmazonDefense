@@ -1,11 +1,12 @@
 import Phaser from "phaser";
 import Player from "./sprites/Player";
+import Tree from "./sprites/Tree"; 
 
 const config = {
   type: Phaser.AUTO,
   parent: "phaser-example",
   width: 800,
-  height: 600,
+  height: 900,
   scene: {
     preload: preload,
     create: create
@@ -51,12 +52,16 @@ function registerAnimation(ctx, sprite, name, frames_count) {
 
 function preload() {
   loadAnimationSprites(this, "player", "idle", 11)
+  loadAnimationSprites(this, "tree", "idle", 1)
 }
 
 function create() {
   registerAnimation(this, "player", "idle", 11)
+  registerAnimation(this, "tree", "idle", 1)
 
   const player = new Player(this, 256, 256, "player_idle_0")
+  const tree = new Tree(this, 10, 10, "tree_idle_0")
 
   player.playAnim('player_idle')
+  tree.playAnim('tree_idle')
 }
