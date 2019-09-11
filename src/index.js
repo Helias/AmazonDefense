@@ -8,7 +8,8 @@ const config = {
   height: 600,
   scene: {
     preload: preload,
-    create: create
+    create: create,
+    update: update
   }
 };
 
@@ -56,7 +57,11 @@ function preload() {
 function create() {
   registerAnimation(this, "player", "idle", 11)
 
-  const player = new Player(this, 256, 256, "player_idle_0")
+  this.player = new Player(this, 256, 256, "player_idle_0")
 
-  player.playAnim('player_idle')
+  this.player.playAnim('player_idle')
+}
+
+function update(time, delta) {
+    this.player.update(time, delta)
 }

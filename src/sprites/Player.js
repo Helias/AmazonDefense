@@ -6,4 +6,8 @@ export default class Player {
     playAnim(animId) {
         this.sprite.play(animId)
     }
+
+    update(time, delta) {
+        console.log("Player update")
+    }
 }
