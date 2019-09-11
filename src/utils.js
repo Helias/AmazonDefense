@@ -1,8 +1,4 @@
-export const centerGameObjects = (objects) => {
-  objects.forEach(function (object) {
-    object.anchor.setTo(0.5)
-  })
-}
+import { SETTINGS } from './settings'
 
 export function clamp(i, min, max) {
   if(i < min)
@@ -13,9 +9,9 @@ export function clamp(i, min, max) {
     return i
 }
 
-export function coordinates(X, Y, width, height) {
+export function coordinates(X, Y) {
   return {
-    x: X * width,
-    y: Y * height
+    x: X * SETTINGS.canvasWidth,
+    y: Y * SETTINGS.canvasHeight
   }
 }

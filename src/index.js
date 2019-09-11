@@ -1,12 +1,15 @@
 import Phaser from "phaser";
 import Player from "./sprites/Player";
 import Tree from "./sprites/Tree"; 
+import { SETTINGS } from './settings'
+
+console.log(SETTINGS)
 
 const config = {
   type: Phaser.AUTO,
   parent: "phaser-example",
-  width: 800,
-  height: 900,
+  width: SETTINGS.canvasWidth,
+  height: SETTINGS.canvasHeight,
   scene: {
     preload: preload,
     create: create,
@@ -68,5 +71,5 @@ function create() {
 }
 
 function update() {
-
+    this.player.update(this)
 }
