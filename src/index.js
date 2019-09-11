@@ -1,5 +1,4 @@
 import Phaser from "phaser";
-import logoImg from "./assets/logo.png";
 import Player from "./sprites/Player";
 
 const config = {
@@ -19,7 +18,6 @@ function loadAnimationSprites(ctx, sprite, name, frames_count) {
   let basepath = `assets/sprites/${sprite}/${name}`
 
   let animKey = `${sprite}_${name}`
-  let animFrames = []
 
   for(let i=0; i < frames_count; ++i) {
     let filename = `${basepath}/${i}.png`
@@ -27,6 +25,18 @@ function loadAnimationSprites(ctx, sprite, name, frames_count) {
     let frameId = `${animKey}_${i}`
 
     ctx.load.spritesheet(frameId, filename, {frameWidth: 512, frameHeight: 512})
+  }
+}
+
+function registerAnimation(ctx, sprite, name, frames_count) {
+  let basepath = `assets/sprites/${sprite}/${name}`
+
+  let animKey = `${sprite}_${name}`
+  let animFrames = []
+
+  for(let i=0; i < frames_count; ++i) {
+    let filename = `${basepath}/${i}.png`
+    let frameId = `${animKey}_${i}`
 
     animFrames.push({ key: frameId })
   }
@@ -40,12 +50,13 @@ function loadAnimationSprites(ctx, sprite, name, frames_count) {
 }
 
 function preload() {
-  this.load.image("logo", logoImg);
-
   loadAnimationSprites(this, "player", "idle", 11)
 }
 
 function create() {
+  registerAnimation(this, "player", "idle", 11)
+
   const player = new Player(this, 256, 256, "player_idle_0")
-  player.playAnim("player_idle")
+
+  player.playAnim('player_idle')
 }
