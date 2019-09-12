@@ -95,7 +95,17 @@ function initEnemies(ctx, count, trees) {
   }
 
   return enemies
-}  
+}
+
+function checkTrees(ctx) {
+  for (let i = 0; i < ctx.trees.length; i++) {
+    if (ctx.trees[i] != null && ctx.trees[i].hp <= 0 && !ctx.trees[i].isDead) {
+      ctx.trees[i].isDead = true;
+      ctx.trees[i].sprite.destroy();
+      console.log(ctx.trees);
+    }
+  }
+}
 
 function create() {
   registerAnimation(this, "player", "idle", 11)
@@ -114,7 +124,9 @@ function create() {
 function update() {
   this.player.update(this)
 
-  this.enemies.forEach(function(enemy) {
+  checkTrees(this)
+
+  this.enemies.forEach((enemy) => {
       enemy.update(this, 0.98)
     }
   )

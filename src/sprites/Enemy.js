@@ -26,21 +26,23 @@ export default class Enemy {
     }
 
     update(ctx, spawnDifficulty) {
-        if(this.active) {
+        if (this.active) {
             // respawn the enemy
             if(this.hp <= 0) {
                 this.respawn(); 
             }
 
-            if(this.sprite.y >= this.triggerY) {
+            if (this.sprite.y >= this.triggerY) {
                 this.speed = this.speedMax * 0.5
 
-                if (this.target == null) {
+                if (this.target == null || this.target.hp <= 0 || this.target.isDead) {
                     this.target = this.getNearestTree(); 
                 }
 
-                this.walkToTarget();
-                
+                if (this.target != null && this.target.hp > 0) {
+                    this.walkToTarget();
+                }
+
             } else {
                 this.speed = this.speedMax
 
@@ -49,7 +51,7 @@ export default class Enemy {
 
             
             // hit 
-            if(this.speed<this.speedMax){
+            if(this.speed < this.speedMax){
                 this.speed += 0.05
             }
 
@@ -79,20 +81,20 @@ export default class Enemy {
             let y = this.trees[i].sprite.y;
             let distance = dist(this.sprite.x, this.sprite.y, x, y);
             min = min == null ? distance : min;
-            if (distance < min) {
+            if (this.trees[i] != null && this.trees[i].hp > 0 && distance < min) {
                 target = this.trees[i];
                 min = distance;
             }
         }
+
         return target;
     }
 
     walkToTarget() {
-        if (!this.isNear(this.target)) {
+
+         if (this.target == null || this.target.hp <= 0 || !this.isNear(this.target)) {
             let xDiff = this.sprite.x - this.target.sprite.x
             let yDiff = this.sprite.y - this.target.sprite.y
-
-            console.log(yDiff)
 
             if(xDiff < 0) {
                 this.sprite.x += Math.min(-xDiff, this.speed)
@@ -106,11 +108,10 @@ export default class Enemy {
                 this.sprite.y -= Math.min(yDiff, this.speed)
             }
 
-            return true; 
-            
+            return true;
         }
          //attck tree
-         if(this.target!=null || this.deadTrees<=24) {this.attackTree();}
+         if (this.target != null && this.target.hp > 0 && this.deadTrees <= 25) { this.attackTree(); }
         
         return false;
     }
@@ -125,17 +126,19 @@ export default class Enemy {
         return Math.random() * (maxPos.x - minPos.x) + minPos.x
     }
 
-    attackTree(){
-        this.target.hp-=1;
+    attackTree() {
+        this.target.hp -= 1;
 
         //animazione dell'albero ...
 
-        if(this.target.hp<0 ){
-            this.target.sprite.y=7000;
-            this.target=null;
+        if (this.target == null || this.target.hp <= 0) {
+            this.target.sprite.destroy();
+            this.target.isDead = true
             this.deadTrees++;
+            this.target = null;
+
+            console.log(this.trees);
         }
 
-     
     }
 }
