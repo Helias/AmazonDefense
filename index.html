@@ -50,7 +50,7 @@
                         <div class="input-field">
                             <div class="fake-captcha">
                                 <label>
-                                    <input data-target="modal1" type="checkbox" class="filled-in modal-trigger" onclick="initGame()"/>
+                                    <input data-target="modal1" type="checkbox" class="filled-in modal-trigger" onclick="initGame()" id="checkgame">
                                     <span style="float: left; margin-top: 10px">I'm not a robot</span>
                                     <div style="text-align: right">
                                         <img src="frontend/media/reCaptcha.png" style="text-align:right; width: 35px" alt="">
@@ -61,7 +61,7 @@
 
                         <!-- submit -->
                         <div style="text-align: center">
-                            <a class="btn-floating btn-large waves-effect waves-light brown lighten-2">
+                            <a class="btn-floating btn-large waves-effect waves-light brown lighten-2" id="arrow">
                                     <i class="material-icons right">send</i>
                             </a>
                         </div>
@@ -94,11 +94,18 @@
                 }
             };
             document.addEventListener('DOMContentLoaded', () => {
-                var elems = document.querySelectorAll('.modal');
-                var instances = M.Modal.init(elems, options);
+                let elems = document.querySelectorAll('.modal');
+                let instances = M.Modal.init(elems, options);
             });
 
+            // setTimeout(() => {
+            //     let instance = M.Modal.getInstance(document.getElementsByClassName("modal")[0]);
+            //     instance.close()
+            // }, 3000);
+
             // <h4>Then show me!</h4>
+
+            document.getElementById("checkgame").checked = false;
 
             function initGame() {
                 document.getElementById("player-init").value = 1;

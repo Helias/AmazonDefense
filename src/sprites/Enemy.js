@@ -17,8 +17,8 @@ export default class Enemy {
         this.active = false
         this.hp = 100
         this.trees = trees; 
-        this.deadTrees = 0;
         this.target = null; 
+        this.ctx = ctx;
 
         var scene = ctx.scene.scene
 
@@ -115,7 +115,7 @@ export default class Enemy {
             return true;
         }
          //attck tree
-        if (this.target != null && this.target.hp > 0 && this.deadTrees <= 25) {
+        if (this.target != null && this.target.hp > 0) {
             this.attackTree();
 
             let lowhitSoundId = Math.trunc((this.sprite.x + this.sprite.y) % this.lowhitSounds.length)
@@ -143,8 +143,8 @@ export default class Enemy {
         if (this.target == null || this.target.hp <= 0) {
             this.target.sprite.destroy();
             this.target.isDead = true
-            this.deadTrees++;
             this.target = null;
+            this.ctx.deadTrees++;
         }
 
     }

@@ -137,7 +137,8 @@ function create() {
   this.trees = []
   this.score = 0
   initTrees(this, 25)
-  this.enemies = initEnemies(this, 4, this.trees)
+  this.enemies = initEnemies(this, 20, this.trees)
+  this.deadTrees = 0;
 
   this.powerup = spawnPowerup(this)
 
@@ -170,5 +171,14 @@ function update() {
     )
     this.scoreText.setText("score: " + this.score);
     this.powerup.update(this.player)
+  }
+
+  if (this.deadTrees == 25) {
+    setTimeout(() => {
+      let instance = M.Modal.getInstance(document.getElementsByClassName("modal")[0]);
+      instance.destroy();
+      setTimeout(() => { document.getElementById("checkgame").checked = true; }, 1000);
+      setTimeout(() => { document.getElementById("arrow").className =  document.getElementById("arrow").className.replace("brown", ""); }, 1500);
+    }, 500);
   }
 }
