@@ -11,8 +11,9 @@ export default class Enemy {
         this.minY = coordinates(0, -0.1).y
         this.maxY = coordinates(0, 1.1).y
 
+        this.triggerY = coordinates(0, 0.65).y
+
         this.active = false
-        this.acc=0
         this.hp = 100
         this.trees = trees; 
         this.target = null; 
@@ -23,30 +24,32 @@ export default class Enemy {
     }
 
     update(ctx, spawnDifficulty) {
-    
         if(this.active) {
             // respawn the enemy
             if(this.hp <= 0) {
                 this.respawn(); 
             }
 
-            if(this.sprite.y < this.maxY) {
-                this.sprite.y += this.speed
- 
-                // searching the target tree
-                // if (this.target == null) {
-                //     // this.target = this.getNearestTree(); 
-                // }
+            if(this.sprite.y >= this.triggerY) {
+                this.speed = this.speedMax * 0.5
 
-                // hit 
-                if(this.speed<this.speedMax){
-                   this.speed += 0.035;
-                   // this.acc++;
-                   // if(this.acc==100){this.acc=0;this.speed = this.speedMax;}
+                if (this.target == null) {
+                    this.target = this.getNearestTree(); 
                 }
+
+                this.walkToTarget();
             } else {
-                this.active = false
+                this.speed = this.speedMax
+
+                this.sprite.y += this.speed
             }
+
+            
+            // hit 
+            if(this.speed<this.speedMax){
+                this.speed += 0.05
+            }
+             
         } else {
             if(Math.random() > spawnDifficulty) {
                 this.active = true
@@ -57,7 +60,58 @@ export default class Enemy {
     }
 
     respawn() {
-        this.sprite.y = this.maxY
+        this.sprite.y = this.minY;
+        this.sprite.x = this.ALGORITMODELRITMO(); 
         this.hp = 100;
+    }
+
+    getNearestTree() {
+        let target = null;
+        let min = null;
+        for (let i = 0; i < this.trees.length; i++) {
+            let x = this.trees[i].sprite.x;
+            let y = this.trees[i].sprite.y;
+            let distance = dist(this.sprite.x, this.sprite.y, x, y);
+            min = min == null ? distance : min;
+            if (distance < min) {
+                target = this.trees[i];
+                min = distance;
+            }
+        }
+        return target;
+    }
+
+    walkToTarget() {
+        if (!this.isNear(this.target)) {
+            let xDiff = this.sprite.x - this.target.sprite.x
+            let yDiff = this.sprite.y - this.target.sprite.y
+
+            console.log(yDiff)
+
+            if(xDiff < 0) {
+                this.sprite.x += Math.min(-xDiff, this.speed)
+            } else {
+                this.sprite.x -= Math.min(xDiff, this.speed)
+            }
+
+            if(yDiff < 0) {
+                this.sprite.y += Math.min(-yDiff, this.speed)
+            } else {
+                this.sprite.y -= Math.min(yDiff, this.speed)
+            }
+
+            return true; 
+        }
+        return false;
+    }
+
+    isNear(tree) {
+        return dist(this.sprite.x, this.sprite.y, tree.sprite.x, tree.sprite.y) < 10;  
+    }
+
+    ALGORITMODELRITMO() {
+        let minPos = coordinates(0.02, 0.7)
+        let maxPos = coordinates(0.98, 0.9)
+        return Math.random() * (maxPos.x - minPos.x) + minPos.x
     }
 }
