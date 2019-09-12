@@ -8,7 +8,7 @@ import Enemy from "./sprites/Enemy";
 
 const config = {
   type: Phaser.AUTO,
-  parent: "phaser-example",
+  parent: "gameCanvas",
   width: SETTINGS.canvasWidth,
   height: SETTINGS.canvasHeight,
   scene: {

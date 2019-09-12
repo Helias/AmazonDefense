@@ -7,6 +7,8 @@ body {
     background-image: url("../media/background4.gif"); 
     background-repeat: no-repeat; 
     background-size: cover; 
+    margin: 0; 
+    height: 100%; 
 }
 
 .formbox {
@@ -40,3 +42,6 @@ body {
     border-radius: 5px 5px 5px 5px;
     width: 50%; 
 }
+
+.modal { width: 900px !important ; height: 600px !important ; }
+
