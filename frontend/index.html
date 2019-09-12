@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>AmazonDefence</title>
 
@@ -10,35 +9,72 @@
     <link rel="stylesheet" href="css/style.css">
 
     <!-- css libraries -->
-     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css"  media="screen,projection"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
+     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 <body>
     
-    <nav>
-        <div class="nav-wrapper teal">
-            <a href="#" class="brand-logo">Logo</a>
+    <nav style="opacity: 0.9">
+        <div class="nav-wrapper teal" style="display: block; align-items: baseline; margin: 0 auto;">
+                <img src="media/icon.png" alt="" style="margin: 0 auto; padding-top: 8px; display: block; width: 50px; "></img>
         </div>
     </nav>  
 
     <div class="container">
+
         <div class="row">
             <div class="col s2"></div>
             <div class="col s8 formbox">
                 <div class="card-panel teal">
                     <div class="content">
+
+                        <div class="title">Amazon Defence</div>
+                        
+                        <div class="quote-container">
+                            <p class="quote"><i>Il cambiamento climatico è una realtà e sta già provocando impatti e fenomeni di frequenza e intensità mai visti nella storia umana e con essi sofferenze, perdita di vite, sconvolgimento degli ecosistemi e della ricchezza di biodiversità che sostengono la nostra vita.</i></p>
+                        </div>
+
                         <div class="input-field">
                             <input placeholder="First name" id="first_name" type="text" class="validate">
-                            <label for="first_name">First Name</label>
                         </div>
                         <div class="input-field">
                             <input placeholder="Last name" id="last_name" type="text" class="validate">
-                            <label for="last_name">Last Name</label>
                         </div>
                         <div class="input-field">
                             <input placeholder="Email" id="email" type="email" class="validate">
-                            <label for="last_name">Email</label>
+                        </div>
+
+                        <!-- fake captcha -->
+                        <div class="input-field">
+                            <div class="fake-captcha">
+                                <label>
+                                    <input data-target="modal1" type="checkbox" class="filled-in modal-trigger" onclick="initGame()"/>
+                                    <span style="float: left; margin-top: 10px">I'm not a robot</span>
+                                    <div style="text-align: right">
+                                        <img src="media/reCaptcha.png" style="text-align:right; width: 35px" alt="">
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- submit -->
+                        <div style="text-align: center">
+                            <a class="btn-floating btn-large waves-effect waves-light brown lighten-2">
+                                    <i class="material-icons right">send</i>
+                            </a>
+                        </div>
+                        <div>
+                        <!-- Modal Structure -->
+                        <div id="modal1" class="modal">
+                            <div class="modal-content">
+                            <h4>Then show me!</h4>
+                            <p>Game canvas</p>
+                            </div>
+                            <div class="modal-footer">
+                            </div>
+                        </div>
                         </div>
                     </div>
                 </div>
@@ -47,6 +83,22 @@
         </div>
     </div>
 
-    <!-- js libraries -->
+    <!-- !--JavaScript at end of body for optimized loading--> 
+    <script src="materialize/js/materialize.min.js"></script>
+    <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var elems = document.querySelectorAll('.modal');
+                var instances = M.Modal.init(elems);
+            });
+
+            function initGame() {
+                document.addEventListener('DOMContentLoaded', function() {
+                    var elems = document.querySelectorAll('.modal');
+                    var instances = M.Modal.init(elems);
+                });
+            }
+    </script>
 </body>
 </html>
+
+
