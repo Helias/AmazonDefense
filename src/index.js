@@ -67,6 +67,10 @@ function preload() {
   for(let i = 0; i < SETTINGS.hitSounds; ++i) {
     this.scene.scene.load.audio(`hit${i}`, `assets/audio/hit${i}.mp3`)
   }
+
+  for(let i = 0; i < SETTINGS.lowhitSounds; ++i) {
+    this.scene.scene.load.audio(`lowhit${i}`, `assets/audio/lowhit${i}.mp3`)
+  }
 }
 
 

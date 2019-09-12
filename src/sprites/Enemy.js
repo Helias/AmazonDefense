@@ -1,5 +1,5 @@
 import { dist, coordinates } from "../utils";
-import { isRegExp } from "util";
+import { SETTINGS } from '../settings'
 
 export default class Enemy {
     constructor(ctx, x, y, depth, trees) {
@@ -19,6 +19,14 @@ export default class Enemy {
         this.trees = trees; 
         this.deadTrees = 0;
         this.target = null; 
+
+        var scene = ctx.scene.scene
+
+        this.lowhitSounds = []
+
+        for(let i = 0; i < SETTINGS.lowhitSounds; ++i) {
+            this.lowhitSounds.push(scene.sound.add(`lowhit${i}`))
+        }
     }
 
     playAnim(animId) {
@@ -105,7 +113,12 @@ export default class Enemy {
             return true;
         }
          //attck tree
-         if (this.target != null && this.target.hp > 0 && this.deadTrees <= 25) { this.attackTree(); }
+        if (this.target != null && this.target.hp > 0 && this.deadTrees <= 25) {
+            this.attackTree();
+
+            let lowhitSoundId = Math.trunc((this.sprite.x + this.sprite.y) % this.lowhitSounds.length)
+            this.lowhitSounds[lowhitSoundId].play()
+        }
         
         return false;
     }
