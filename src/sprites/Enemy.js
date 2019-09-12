@@ -36,8 +36,9 @@ export default class Enemy {
     update(ctx, spawnDifficulty) {
         if (this.active) {
             // respawn the enemy
-            if(this.hp <= 0) {
-                this.respawn(); 
+            if (this.hp <= 0) {
+                ctx.score++;
+                this.respawn();
             }
 
             if (this.sprite.y >= this.triggerY) {
@@ -70,6 +71,7 @@ export default class Enemy {
     }
 
     respawn() {
+        this.active = false
         this.sprite.y = this.minY;
         this.sprite.x = this.ALGORITMODELRITMO(); 
         this.hp = 100;

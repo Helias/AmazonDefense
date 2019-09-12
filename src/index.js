@@ -120,8 +120,15 @@ function create() {
   this.player.playAnim('player_idle')
 
   this.trees = []
+  this.score = 0
   initTrees(this, 25)
-  this.enemies = initEnemies(this, 20, this.trees)
+  this.enemies = initEnemies(this, 4, this.trees)
+
+  this.scoreText = this.add.text(3, 3, 'score: '+this.score, {
+    font: '20px Bangers',
+    fill: '#7744ff'
+  })
+
 
   var backgroundMusic = this.scene.scene.sound.add("background_song", {
     mute: false,
@@ -145,4 +152,5 @@ function update() {
     }
   )
 
+  this.scoreText.setText("score: " + this.score);
 }
