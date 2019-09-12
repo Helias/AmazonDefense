@@ -14,12 +14,12 @@ export default class Powerup {
   activePowerup(player) {
     let distance = dist(this.sprite.x, this.sprite.y, player.sprite.x, player.sprite.y)
     if (!this.used && distance < 10) {
-      player.maxSpeed = coordinates(0.008, 0.008)
+      player.maxSpeed = coordinates(0.01, 0.01)
       this.used = true
       this.sprite.destroy()
 
       setTimeout(() => {
-        player.maxSpeed = coordinates(0.005, 0.005)
+        player.maxSpeed = coordinates(0.007, 0.007)
         this.used = false
       }, 3000);
 

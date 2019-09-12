@@ -70,7 +70,6 @@
                         <!-- Modal Structure -->
                           <div id="modal1" class="modal">
                               <div class="modal-content">
-                              <h4>Then show me!</h4>
                                 <div id="gameCanvas"></div>
                             </div>
                           </div>
@@ -91,7 +90,21 @@
                 var instances = M.Modal.init(elems);
             });
 
+            // <h4>Then show me!</h4>
+
             function initGame() {
+                M.toast({
+                    html: '<b style="font-size: 28px;">Allora dimostramelo, salva gli alberi!</b>',
+                    displayLength: 2000,
+                    completeCallback: () => { M.toast({
+                        html: '<b style="font-size: 28px;">Utilizza le frecce direzionali per muoverti ←↑→↓</b>',
+                        displayLength: 2000,
+                        completeCallback: () => {
+                            M.toast({ html: '<b style="font-size: 28px;">Utilizza spazio <sub><i class="material-icons">space_bar</i></sub> per colpire i nemici</b>', displayLength: 2000 })
+                        }
+                    }) }
+                })
+
                 document.addEventListener('DOMContentLoaded', function() {
                     var elems = document.querySelectorAll('.modal');
                     var instances = M.Modal.init(elems);
