@@ -1,9 +1,47 @@
+@import url('https://fonts.googleapis.com/css?family=Shadows+Into+Light&display=swap');
+@import url('https://fonts.googleapis.com/css?family=PT+Sans&display=swap');
+
 body {
-    background-image: url("../media/background.gif"); 
+    /* font-family: 'Shadows Into Light', cursive; */
+    font-family: 'PT Sans', sans-serif;
+    background-image: url("../media/background4.gif"); 
     background-repeat: no-repeat; 
     background-size: cover; 
+    margin: 0; 
+    height: 100%; 
 }
 
 .formbox {
     margin-top: 20px; 
 }
+
+.title { 
+    text-align: center;
+    font-size: 45px; 
+    margin-bottom: 20px; 
+    color: #ededed;
+}
+
+.quote-container {
+    padding: 6px; 
+    border: 1px solid #ededed; 
+    border-right: 0px; 
+    border-left: 0px;
+    margin-bottom: 40px; 
+}
+
+.quote {
+    color: #ededed; 
+    font-size: 14px; 
+}
+
+.fake-captcha {
+    font-size: 20px; 
+    padding: 15px; 
+    background-color: #ededed; 
+    border-radius: 5px 5px 5px 5px;
+    width: 50%; 
+}
+
+.modal { width: 900px !important ; height: 600px !important ; }
+

@@ -9,7 +9,7 @@ import { SETTINGS } from './settings'
 
 const config = {
   type: Phaser.AUTO,
-  parent: "phaser-example",
+  parent: "gameCanvas",
   width: SETTINGS.canvasWidth,
   height: SETTINGS.canvasHeight,
   scene: {
