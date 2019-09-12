@@ -5,16 +5,18 @@ export default class Enemy {
         this.sprite = ctx.add.sprite(x, y)
         this.sprite.depth = depth
 
-        this.speed = coordinates(0, 0.0025).y
+        this.speedMax = coordinates(0, 0.0025).y
+        this.speed = this.speedMax;
 
         this.minY = coordinates(0, -0.1).y
         this.maxY = coordinates(0, 1.1).y
 
-        this.active = false
+        this.triggerY = coordinates(0, 0.65).y
 
+        this.active = false
+        this.hp = 100
         this.trees = trees; 
         this.target = null; 
-        this.hp = 100
     }
 
     playAnim(animId) {
@@ -23,19 +25,31 @@ export default class Enemy {
 
     update(ctx, spawnDifficulty) {
         if(this.active) {
+            // respawn the enemy
             if(this.hp <= 0) {
                 this.respawn(); 
             }
 
-            if(this.sprite.y < this.maxY) {
-                // look for the nearest tree
+            if(this.sprite.y >= this.triggerY) {
+                this.speed = this.speedMax * 0.5
+
                 if (this.target == null) {
                     this.target = this.getNearestTree(); 
                 }
-                this.walkToTarget(); 
+
+                this.walkToTarget();
             } else {
-                this.active = false
+                this.speed = this.speedMax
+
+                this.sprite.y += this.speed
             }
+
+            
+            // hit 
+            if(this.speed<this.speedMax){
+                this.speed += 0.05
+            }
+             
         } else {
             if(Math.random() > spawnDifficulty) {
                 this.active = true
@@ -45,44 +59,59 @@ export default class Enemy {
         }
     }
 
+    respawn() {
+        this.sprite.y = this.minY;
+        this.sprite.x = this.ALGORITMODELRITMO(); 
+        this.hp = 100;
+    }
+
     getNearestTree() {
-        let target = null; 
+        let target = null;
         let min = null;
         for (let i = 0; i < this.trees.length; i++) {
             let x = this.trees[i].sprite.x;
             let y = this.trees[i].sprite.y;
-            console.log(this.trees[i].sprite)
-            console.log('tree x ' + x)
-            console.log('tree y ' + y)
-            console.log('enemy x ' + this.sprite.x)
-            console.log('enemy y ' + this.sprite.y)
             let distance = dist(this.sprite.x, this.sprite.y, x, y);
-            console.log(distance);
-            min = min == null ? distance : min; 
+            min = min == null ? distance : min;
             if (distance < min) {
-                target = this.trees[i]; 
-                min = distance; 
+                target = this.trees[i];
+                min = distance;
             }
         }
-        return target; 
+        return target;
     }
 
     walkToTarget() {
         if (!this.isNear(this.target)) {
-            this.sprite.x = this.sprite.x > this.target.x ? this.sprite.x -- : this.sprite.x ++; 
-            this.sprite.y = this.sprite.y > this.target.y ? this.sprite.y -- : this.sprite.y ++; 
+            let xDiff = this.sprite.x - this.target.sprite.x
+            let yDiff = this.sprite.y - this.target.sprite.y
+
+            console.log(yDiff)
+
+            if(xDiff < 0) {
+                this.sprite.x += Math.min(-xDiff, this.speed)
+            } else {
+                this.sprite.x -= Math.min(xDiff, this.speed)
+            }
+
+            if(yDiff < 0) {
+                this.sprite.y += Math.min(-yDiff, this.speed)
+            } else {
+                this.sprite.y -= Math.min(yDiff, this.speed)
+            }
+
             return true; 
         }
-        return false; 
+        return false;
     }
 
     isNear(tree) {
-        let response = Math.abs(this.sprite.x - tree.x) > 3;
-        return response &= Math.abs(this.sprite.y - tree.y) > 3;
+        return dist(this.sprite.x, this.sprite.y, tree.sprite.x, tree.sprite.y) < 10;  
     }
 
-    respawn() {
-        this.sprite.y = this.maxY
-        this.hp = 100; 
+    ALGORITMODELRITMO() {
+        let minPos = coordinates(0.02, 0.7)
+        let maxPos = coordinates(0.98, 0.9)
+        return Math.random() * (maxPos.x - minPos.x) + minPos.x
     }
 }
