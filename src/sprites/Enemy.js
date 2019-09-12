@@ -1,4 +1,5 @@
 import { dist, coordinates } from "../utils";
+import { isRegExp } from "util";
 
 export default class Enemy {
     constructor(ctx, x, y, depth, trees) {
@@ -16,6 +17,7 @@ export default class Enemy {
         this.active = false
         this.hp = 100
         this.trees = trees; 
+        this.deadTrees = 0;
         this.target = null; 
     }
 
@@ -38,6 +40,7 @@ export default class Enemy {
                 }
 
                 this.walkToTarget();
+                
             } else {
                 this.speed = this.speedMax
 
@@ -49,6 +52,9 @@ export default class Enemy {
             if(this.speed<this.speedMax){
                 this.speed += 0.05
             }
+
+           
+           
              
         } else {
             if(Math.random() > spawnDifficulty) {
@@ -99,7 +105,11 @@ export default class Enemy {
             }
 
             return true; 
+            
         }
+         //attck tree
+         if(this.target!=null || this.deadTrees<=24) {this.attackTree();}
+        
         return false;
     }
 
@@ -111,5 +121,19 @@ export default class Enemy {
         let minPos = coordinates(0.02, 0.7)
         let maxPos = coordinates(0.98, 0.9)
         return Math.random() * (maxPos.x - minPos.x) + minPos.x
+    }
+
+    attackTree(){
+        this.target.hp-=1;
+
+        //animazione dell'albero ...
+
+        if(this.target.hp<0 ){
+            this.target.sprite.y=7000;
+            this.target=null;
+            this.deadTrees++;
+        }
+
+     
     }
 }

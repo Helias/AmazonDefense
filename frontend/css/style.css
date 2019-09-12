@@ -1,0 +1,9 @@
+body {
+    background-image: url("../media/background.gif"); 
+    background-repeat: no-repeat; 
+    background-size: cover; 
+}
+
+.formbox {
+    margin-top: 20px; 
+}
