@@ -3,6 +3,7 @@ export default class Tree {
         this.sprite = ctx.add.sprite(x, y)
         this.sprite.depth = depth
         this.hp = 100
+        this.isDead = false
     }
 
     playAnim(animId) {
