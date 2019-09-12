@@ -34,7 +34,7 @@ function loadAnimationSprites(ctx, sprite, name, frames_count) {
   }
 }
 
-function registerAnimation(ctx, sprite, name, frames_count) {
+function registerAnimation(ctx, sprite, name, frames_count, repeat=0, yoyo=false, frameRate=16) {
   let basepath = `assets/sprites/${sprite}/${name}`
 
   let animKey = `${sprite}_${name}`
@@ -50,13 +50,15 @@ function registerAnimation(ctx, sprite, name, frames_count) {
   ctx.anims.create({
     key: animKey,
     frames: animFrames,
-    frameRate: 8,
-    repeat: -1
+    frameRate: frameRate,
+    repeat: repeat,
+    yoyo: yoyo
   })
 }
 
 function preload() {
   loadAnimationSprites(this, "player", "idle", 11)
+  loadAnimationSprites(this, "player", "walk", 17)
   loadAnimationSprites(this, "tree", "idle", 1)
   loadAnimationSprites(this, "enemy", "idle", 1)
 }
@@ -98,9 +100,10 @@ function initEnemies(ctx, count, trees) {
 }  
 
 function create() {
-  registerAnimation(this, "player", "idle", 11)
-  registerAnimation(this, "tree", "idle", 1)
-  registerAnimation(this, "enemy", "idle", 1)
+  registerAnimation(this, "player", "idle", 11, -1, true)
+  registerAnimation(this, "player", "walk", 17, -1, true)
+  registerAnimation(this, "tree", "idle", 1, -1, true)
+  registerAnimation(this, "enemy", "idle", 1, -1, true)
 
   this.player = new Player(this, 256, 256)
   this.player.playAnim('player_idle')

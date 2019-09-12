@@ -40,11 +40,11 @@ export default class Enemy {
 
                 // hit 
                 if(this.speed<this.speedMax){
-                   this.speed = 0.2;
-                    this.acc++;
-                   if(this.acc==100){this.acc=0;this.speed = this.speedMax;}
+                   this.speed += 0.035;
+                   // this.acc++;
+                   // if(this.acc==100){this.acc=0;this.speed = this.speedMax;}
                 }
-ì            } else {
+            } else {
                 this.active = false
             }
         } else {

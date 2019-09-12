@@ -1,4 +1,4 @@
 export const SETTINGS = {
-    canvasWidth: 500,
-    canvasHeight: 800
+    canvasWidth: 600,
+    canvasHeight: 900
 }
