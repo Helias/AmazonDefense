@@ -87,9 +87,15 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <input type="hidden" value="0" id="player-init">
     <script>
-            document.addEventListener('DOMContentLoaded', function() {
+            let options = {
+                dismissible: true,
+                onCloseEnd: () => {
+                    document.getElementById("player-init").value = 0;
+                }
+            };
+            document.addEventListener('DOMContentLoaded', () => {
                 var elems = document.querySelectorAll('.modal');
-                var instances = M.Modal.init(elems);
+                var instances = M.Modal.init(elems, options);
             });
 
             // <h4>Then show me!</h4>
@@ -107,17 +113,6 @@
                         }
                     }) }
                 })
-
-                let options = {
-                        dismissible: true,
-                        onCloseEnd: () => { // Callback for Modal close
-                            alert('Closed');  
-                        } 
-                    };
-                document.addEventListener('DOMContentLoaded', function() {
-                    var elems = document.querySelectorAll('.modal');
-                    var instances = M.Modal.init(elems, options);
-                });
             }
 
     </script>
