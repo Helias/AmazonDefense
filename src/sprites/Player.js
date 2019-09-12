@@ -41,6 +41,7 @@ export default class Player {
               ((flip && enemy.sprite.x < ctx.sprite.x) || (!flip && enemy.sprite.x > ctx.sprite.x)) &&
                dist(ctx.sprite.x, ctx.sprite.y, enemy.sprite.x, enemy.sprite.y) <= minDist) {
                 enemy.hp -= 50
+                enemy.speed = 0;
             }
         })
 

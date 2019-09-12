@@ -79,7 +79,7 @@ function initTrees(ctx, count) {
 
 function initEnemies(ctx, count) {
   let enemies = []
-  for(let i = 0; i < count; ++i) {
+  for(let i = 0; i <count; ++i){
     let minPos = coordinates(0.02, -0.2)
     let maxPos = coordinates(0.98, -0.2)
 
@@ -106,7 +106,7 @@ function create() {
   this.player.playAnim('player_idle')
 
   this.trees = []
-  this.enemies = initEnemies(this, 10)
+  this.enemies = initEnemies(this, 5)
 
   initTrees(this, 25)
 }
