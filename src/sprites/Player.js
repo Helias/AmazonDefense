@@ -83,13 +83,17 @@ export default class Player {
             this.speed.y = this.maxSpeed.y
         }
 
+        this.playAnim("player_idle")
+
         if(this.keyMoveForward.isDown) {
             this.sprite.y -= this.speed.y
             this.playAnim("player_walk")
         } else if(this.keyMoveBackward.isDown) {
             this.sprite.y += this.speed.y
             this.playAnim("player_walk")
-        } else if(this.keyMoveRight.isDown) {
+        }
+        
+        if(this.keyMoveRight.isDown) {
             this.sprite.x += this.speed.x
             this.sprite.flipX = true
             this.playAnim("player_walk")
@@ -97,8 +101,6 @@ export default class Player {
             this.sprite.x -= this.speed.x
             this.sprite.flipX = false
             this.playAnim("player_walk")
-        } else {
-            this.playAnim("player_idle")
         }
 
         if(this.attackCooldown > 0)
