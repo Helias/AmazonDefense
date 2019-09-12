@@ -111,7 +111,7 @@ function initEnemies(ctx, count, trees) {
 }
 
 function create() {
-  registerAnimation(this, "player", "idle", 11, -1, true)
+  registerAnimation(this, "player", "idle", 11, -1, true, 10)
   registerAnimation(this, "player", "walk", 17, -1, true, 32)
   registerAnimation(this, "tree", "idle", 1, -1, true)
   registerAnimation(this, "enemy", "idle", 1, -1, true)
@@ -141,7 +141,7 @@ function create() {
   })
 
   // TODO: ENABLE IN RELEASE!
-  backgroundMusic.play()
+  // backgroundMusic.play()
 }
 
 function update() {
