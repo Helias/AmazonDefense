@@ -4,7 +4,7 @@ import { SETTINGS } from '../settings'
 export default class Player {
     constructor(ctx, x, y) {
         // Sprite data
-        this.sprite = ctx.add.sprite(x, y, 'player_idle_0')        
+        this.sprite = ctx.add.sprite(x, y, 'player_idle_0')
 
         this.sprite.scaleX = 1.2
         this.sprite.scaleY = 1.2

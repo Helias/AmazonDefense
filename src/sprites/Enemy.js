@@ -4,7 +4,7 @@ import { SETTINGS } from '../settings'
 export default class Enemy {
     constructor(ctx, x, y, depth, trees) {
         this.sprite = ctx.add.sprite(x, y)
-        this.sprite.depth = depth
+        // this.sprite.depth = depth
 
         this.speedMax = coordinates(0, 0.0025).y
         this.speed = this.speedMax;
