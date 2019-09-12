@@ -1,5 +1,5 @@
 import { dist, clamp, coordinates } from '../utils'
-import { Scene, Tilemaps } from 'phaser';
+import { SETTINGS } from '../settings'
 
 export default class Player {
     constructor(ctx, x, y) {
@@ -9,10 +9,10 @@ export default class Player {
         this.sprite.scaleX = 1.2
         this.sprite.scaleY = 1.2
 
-        this.minCoords = coordinates(0.1, 0.3)
-        this.maxCoords = coordinates(0.9, 0.9)
+        this.minCoords = coordinates(0.02, 0.3)
+        this.maxCoords = coordinates(0.98, 0.95)
 
-        this.maxSpeed = coordinates(0.0075, 0.0075)
+        this.maxSpeed = coordinates(0.005, 0.005)
         this.speed = coordinates(0, 0)
         Object.assign(this.speed, this.maxSpeed)
 
@@ -25,15 +25,23 @@ export default class Player {
         this.keyMoveLeft = scene.input.keyboard.addKey('LEFT')
         this.keyAttack = scene.input.keyboard.addKey('space')
 
+        this.hitSounds = []
+
+        for(let i = 0; i < SETTINGS.hitSounds; ++i) {
+            this.hitSounds.push(scene.sound.add(`hit${i}`))
+        }
+
         // Attack cooldown
         this.attackCooldown = 0
-        this.maxAttackCooldown = 20
+        this.maxAttackCooldown = 25
     }
 
 
     attack(enemies, flip) {
         let ctx = this
-        let minDist = coordinates(0.25, 0).x
+        let minDist = coordinates(0.15, 0).x
+
+        let hit = false
 
         enemies.forEach(function(enemy) {
             if(enemy.active && 
@@ -41,10 +49,13 @@ export default class Player {
                dist(ctx.sprite.x, ctx.sprite.y, enemy.sprite.x, enemy.sprite.y) <= minDist) {
                 enemy.hp -= 50
                 enemy.speed = 0;
+                hit = true
             }
         })
 
         this.attackCooldown = this.maxAttackCooldown
+
+        return hit
     }
 
     playAnim(animId) {
@@ -58,8 +69,15 @@ export default class Player {
             this.speed.x = clamp(this.speed.x, 0, this.maxSpeed.x * 0.5)
             this.speed.y = clamp(this.speed.y, 0, this.maxSpeed.y * 0.5)
 
-            if(this.attackCooldown == 0)
-                this.attack(ctx.enemies, this.sprite.flipX)
+            if(this.attackCooldown == 0) {
+                let hit = this.attack(ctx.enemies, this.sprite.flipX)
+
+                if(hit) {
+                    let hitSoundId = Math.trunc((this.sprite.x + this.sprite.y) % this.hitSounds.length)
+
+                    this.hitSounds[hitSoundId].play()
+                }
+            }
         } else {
             this.speed.x = this.maxSpeed.x
             this.speed.y = this.maxSpeed.y

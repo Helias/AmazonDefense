@@ -42,8 +42,6 @@ export default class Enemy {
                 this.walkToTarget();
                 
             } else {
-                this.speed = this.speedMax
-
                 this.sprite.y += this.speed
             }
 
@@ -52,10 +50,6 @@ export default class Enemy {
             if(this.speed<this.speedMax){
                 this.speed += 0.05
             }
-
-           
-           
-             
         } else {
             if(Math.random() > spawnDifficulty) {
                 this.active = true
@@ -79,7 +73,7 @@ export default class Enemy {
             let y = this.trees[i].sprite.y;
             let distance = dist(this.sprite.x, this.sprite.y, x, y);
             min = min == null ? distance : min;
-            if (distance < min) {
+            if (distance <= min) {
                 target = this.trees[i];
                 min = distance;
             }
