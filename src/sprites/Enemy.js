@@ -1,4 +1,4 @@
-export default class Tree {
+export default class Enemy {
     constructor(ctx, x, y, depth) {
         this.sprite = ctx.add.sprite(x, y)
         this.sprite.depth = depth
