@@ -4,6 +4,7 @@ import Tree from "./sprites/Tree";
 
 import { coordinates } from './utils'
 import { SETTINGS } from './settings'
+import Enemy from "./sprites/Enemy";
 
 const config = {
   type: Phaser.AUTO,
@@ -57,6 +58,7 @@ function registerAnimation(ctx, sprite, name, frames_count) {
 function preload() {
   loadAnimationSprites(this, "player", "idle", 11)
   loadAnimationSprites(this, "tree", "idle", 1)
+  loadAnimationSprites(this, "enemy", "idle", 1)
 }
 
 
@@ -75,27 +77,46 @@ function initTrees(ctx, count) {
   }
 }
 
+function initEnemies(ctx, count) {
+  let enemies = []
+  for(let i = 0; i < count; ++i) {
+    let minPos = coordinates(0.02, -0.2)
+    let maxPos = coordinates(0.98, -0.2)
+
+    let x = Math.random() * (maxPos.x - minPos.x) + minPos.x
+    let y = Math.random() * (maxPos.y - minPos.y) + minPos.y
+
+    // console.log(`Spawning enemy at ${x} ${y}`)
+
+    let enemy = new Enemy(ctx, x, y, y)
+    enemy.playAnim('enemy_idle')
+
+    enemies.push(enemy)
+  }
+
+  return enemies
+}
+
 function create() {
   registerAnimation(this, "player", "idle", 11)
   registerAnimation(this, "tree", "idle", 1)
+  registerAnimation(this, "enemy", "idle", 1)
 
   this.player = new Player(this, 256, 256)
   this.player.playAnim('player_idle')
 
   this.trees = []
-  this.enemies = []
+  this.enemies = initEnemies(this, 20)
 
   initTrees(this, 25)
-}
-
-function spawnEnemy() {
-
 }
 
 function update() {
   this.player.update(this)
 
-  if(Math.random() > 0.9) {
-    spawnEnemy()
-  }
+  this.enemies.forEach(function(enemy) {
+      enemy.update(this, 0.98)
+    }
+  )
+
 }

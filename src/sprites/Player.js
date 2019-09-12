@@ -25,7 +25,7 @@ export default class Player {
 
         // Attack cooldown
         this.attackCooldown = 0
-        this.maxAttackCooldown = 60
+        this.maxAttackCooldown = 20
     }
 
     playAnim(animId) {
@@ -64,5 +64,7 @@ export default class Player {
         // Position clamping
         this.sprite.x = clamp(this.sprite.x, this.minCoords.x, this.maxCoords.x)
         this.sprite.y = clamp(this.sprite.y, this.minCoords.y, this.maxCoords.y)
+
+        this.sprite.depth = this.sprite.y
     }
 }
