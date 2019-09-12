@@ -61,6 +61,8 @@ function preload() {
   loadAnimationSprites(this, "player", "walk", 17)
   loadAnimationSprites(this, "tree", "idle", 1)
   loadAnimationSprites(this, "enemy", "idle", 1)
+
+  this.scene.scene.load.audio("background_song", "assets/audio/background_song.wav")
 }
 
 
@@ -112,6 +114,18 @@ function create() {
   initTrees(this, 25)
   this.enemies = initEnemies(this, 10, this.trees)
 
+  var backgroundMusic = this.scene.scene.sound.add("background_song", {
+    mute: false,
+    volume: 1,
+    rate: 1,
+    detune: 0,
+    seek: 0,
+    loop: true,
+    delay: 0
+  })
+
+  // TODO: ENABLE IN RELEASE!
+  // backgroundMusic.play()
 }
 
 function update() {

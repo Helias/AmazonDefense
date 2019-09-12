@@ -86,8 +86,6 @@ export default class Enemy {
             let xDiff = this.sprite.x - this.target.sprite.x
             let yDiff = this.sprite.y - this.target.sprite.y
 
-            console.log(yDiff)
-
             if(xDiff < 0) {
                 this.sprite.x += Math.min(-xDiff, this.speed)
             } else {
