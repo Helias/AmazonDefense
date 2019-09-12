@@ -5,12 +5,14 @@ export default class Enemy {
         this.sprite = ctx.add.sprite(x, y)
         this.sprite.depth = depth
 
-        this.speed = coordinates(0, 0.0075).y
+        this.speed = coordinates(0, 0.0025).y
 
         this.minY = coordinates(0, -0.1).y
         this.maxY = coordinates(0, 1.1).y
 
         this.active = false
+
+        this.hp = 100
     }
 
     playAnim(animId) {
@@ -19,6 +21,10 @@ export default class Enemy {
 
     update(ctx, spawnDifficulty) {
         if(this.active) {
+            if(this.hp <= 0) {
+                this.sprite.y = this.maxY
+            }
+
             if(this.sprite.y < this.maxY) {
                 this.sprite.y += this.speed
                 // this.sprite.depth = this.sprite.y
@@ -28,6 +34,7 @@ export default class Enemy {
         } else {
             if(Math.random() > spawnDifficulty) {
                 this.active = true
+                this.hp = 100
                 this.sprite.y = this.minY
             }
         }

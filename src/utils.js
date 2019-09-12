@@ -15,3 +15,11 @@ export function coordinates(X, Y) {
     y: Y * SETTINGS.canvasHeight
   }
 }
+
+export function dist(x0, y0, x1, y1) {
+    let xDiff = (x0 - x1)
+    let yDiff = (y0 - y1)
+
+    return Math.sqrt(xDiff * xDiff + yDiff * yDiff)
+}
+

@@ -106,7 +106,7 @@ function create() {
   this.player.playAnim('player_idle')
 
   this.trees = []
-  this.enemies = initEnemies(this, 20)
+  this.enemies = initEnemies(this, 10)
 
   initTrees(this, 25)
 }

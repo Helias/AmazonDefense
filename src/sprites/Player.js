@@ -1,4 +1,4 @@
-import {clamp, coordinates} from '../utils'
+import { dist, clamp, coordinates } from '../utils'
 import { Scene, Tilemaps } from 'phaser';
 
 export default class Player {
@@ -32,8 +32,18 @@ export default class Player {
         this.sprite.play(animId)
     }
 
-    attack(flip) {
-        console.log("Attack")
+    attack(enemies, flip) {
+        let ctx = this
+        let minDist = coordinates(0.25, 0).x
+
+        enemies.forEach(function(enemy) {
+            if(enemy.active && 
+              ((flip && enemy.sprite.x < ctx.sprite.x) || (!flip && enemy.sprite.x > ctx.sprite.x)) &&
+               dist(ctx.sprite.x, ctx.sprite.y, enemy.sprite.x, enemy.sprite.y) <= minDist) {
+                enemy.hp -= 50
+            }
+        })
+
         this.attackCooldown = this.maxAttackCooldown
     }
 
@@ -55,7 +65,7 @@ export default class Player {
         } 
         
         if(this.keyAttack.isDown && this.attackCooldown == 0) {
-            this.attack(this.sprite.flipX)
+            this.attack(ctx.enemies, this.sprite.flipX)
         }
 
         if(this.attackCooldown > 0)
