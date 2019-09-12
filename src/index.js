@@ -63,6 +63,7 @@ function preload() {
   loadAnimationSprites(this, "enemy", "idle", 1)
 
   this.scene.scene.load.audio("background_song", "assets/audio/background_song.mp3")
+  this.cameras.main.backgroundColor.setTo(255,255,255); 
 
   for(let i = 0; i < SETTINGS.hitSounds; ++i) {
     this.scene.scene.load.audio(`hit${i}`, `assets/audio/hit${i}.mp3`)
@@ -109,16 +110,6 @@ function initEnemies(ctx, count, trees) {
   return enemies
 }
 
-function checkTrees(ctx) {
-  for (let i = 0; i < ctx.trees.length; i++) {
-    if (ctx.trees[i] != null && ctx.trees[i].hp <= 0 && !ctx.trees[i].isDead) {
-      ctx.trees[i].isDead = true;
-      ctx.trees[i].sprite.destroy();
-      console.log(ctx.trees);
-    }
-  }
-}
-
 function create() {
   registerAnimation(this, "player", "idle", 11, -1, true)
   registerAnimation(this, "player", "walk", 17, -1, true, 32)
@@ -130,7 +121,7 @@ function create() {
 
   this.trees = []
   initTrees(this, 25)
-  this.enemies = initEnemies(this, 4, this.trees)
+  this.enemies = initEnemies(this, 20, this.trees)
 
   var backgroundMusic = this.scene.scene.sound.add("background_song", {
     mute: false,
@@ -148,8 +139,6 @@ function create() {
 
 function update() {
   this.player.update(this)
-
-  checkTrees(this)
 
   this.enemies.forEach((enemy) => {
       enemy.update(this, 0.98)

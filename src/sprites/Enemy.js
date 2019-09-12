@@ -44,7 +44,7 @@ export default class Enemy {
                 this.speed = this.speedMax * 0.5
 
                 if (this.target == null || this.target.hp <= 0 || this.target.isDead) {
-                    this.target = this.getNearestTree(); 
+                    this.target = this.getNearestTree();
                 }
 
                 if (this.target != null && this.target.hp > 0) {
@@ -77,7 +77,7 @@ export default class Enemy {
 
     getNearestTree() {
         let target = null;
-        let min = null;
+        let min = 300000;
         for (let i = 0; i < this.trees.length; i++) {
             let x = this.trees[i].sprite.x;
             let y = this.trees[i].sprite.y;
@@ -143,8 +143,6 @@ export default class Enemy {
             this.target.isDead = true
             this.deadTrees++;
             this.target = null;
-
-            console.log(this.trees);
         }
 
     }
