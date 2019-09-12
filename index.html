@@ -84,6 +84,8 @@
 
     <!-- !--JavaScript at end of body for optimized loading--> 
     <script src="frontend/materialize/js/materialize.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <input type="hidden" value="0" id="player-init">
     <script>
             document.addEventListener('DOMContentLoaded', function() {
                 var elems = document.querySelectorAll('.modal');
@@ -93,6 +95,7 @@
             // <h4>Then show me!</h4>
 
             function initGame() {
+                document.getElementById("player-init").value = 1;
                 M.toast({
                     html: '<b style="font-size: 28px;">Allora dimostramelo, salva gli alberi!</b>',
                     displayLength: 2000,
@@ -105,9 +108,15 @@
                     }) }
                 })
 
+                let options = {
+                        dismissible: true,
+                        onCloseEnd: () => { // Callback for Modal close
+                            alert('Closed');  
+                        } 
+                    };
                 document.addEventListener('DOMContentLoaded', function() {
                     var elems = document.querySelectorAll('.modal');
-                    var instances = M.Modal.init(elems);
+                    var instances = M.Modal.init(elems, options);
                 });
             }
 

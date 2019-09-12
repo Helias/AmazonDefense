@@ -19,6 +19,8 @@ const config = {
   }
 };
 
+let gameEnabled = false;
+
 const game = new Phaser.Game(config);
 
 function loadAnimationSprites(ctx, sprite, name, frames_count) {
@@ -159,14 +161,14 @@ function create() {
 }
 
 function update() {
-  this.player.update(this)
-
-  this.enemies.forEach((enemy) => {
-      enemy.update(this, 0.98)
-    }
-  )
-
-  this.scoreText.setText("score: " + this.score);
-
-  this.powerup.update(this.player)
+  gameEnabled = document.getElementById("player-init").value == 1;
+  if (gameEnabled) {
+    this.player.update(this)
+    this.enemies.forEach((enemy) => {
+        enemy.update(this, 0.98)
+      }
+    )
+    this.scoreText.setText("score: " + this.score);
+    this.powerup.update(this.player)
+  }
 }
