@@ -77,7 +77,7 @@ function initTrees(ctx, count) {
   }
 }
 
-function initEnemies(ctx, count) {
+function initEnemies(ctx, count, trees) {
   let enemies = []
   for(let i = 0; i <count; ++i){
     let minPos = coordinates(0.02, -0.2)
@@ -88,14 +88,14 @@ function initEnemies(ctx, count) {
 
     // console.log(`Spawning enemy at ${x} ${y}`)
 
-    let enemy = new Enemy(ctx, x, y, y)
+    let enemy = new Enemy(ctx, x, y, y, trees)
     enemy.playAnim('enemy_idle')
 
     enemies.push(enemy)
   }
 
   return enemies
-}
+}  
 
 function create() {
   registerAnimation(this, "player", "idle", 11)
@@ -106,9 +106,9 @@ function create() {
   this.player.playAnim('player_idle')
 
   this.trees = []
-  this.enemies = initEnemies(this, 5)
-
   initTrees(this, 25)
+  this.enemies = initEnemies(this, 10, this.trees)
+
 }
 
 function update() {
