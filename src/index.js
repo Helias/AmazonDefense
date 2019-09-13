@@ -73,6 +73,8 @@ function preload() {
   loadAnimationSprites(this, "tree", "attack", 3)
   loadAnimationSprites(this, "enemy", "walk", 17)
   loadAnimationSprites(this, "enemy", "attack", 17)
+  loadAnimationSprites(this, "powerup-speed", "idle", 1)
+  loadAnimationSprites(this, "powerup-strength", "idle", 1)
   loadAnimationSprites(this, "powerup-tree", "idle", 1)
 
   this.scene.scene.load.audio("background_song", "assets/audio/background_song.mp3")
@@ -123,12 +125,6 @@ function initEnemies(ctx, count, trees) {
   return enemies
 }
 
-function spawnPowerup(ctx) {
-  let powerup = new Powerup(ctx, 400, 400, 20)
-  powerup.playAnim('powerup-tree_idle')
-  return powerup
-}
-
 function create() {
   registerAnimation(this, "player", "idle", 11, -1, true, 10)
   registerAnimation(this, "player", "walk", 16, -1, true, 32)
@@ -137,22 +133,40 @@ function create() {
   registerAnimation(this, "tree", "attack", 1, -1, true)
   registerAnimation(this, "enemy", "walk", 17, -1, true,32)
   registerAnimation(this, "enemy", "attack", 17, -1, true,60)
+  registerAnimation(this, "powerup-speed", "idle", 1, -1, true)
+  registerAnimation(this, "powerup-strength", "idle", 1, -1, true)
   registerAnimation(this, "powerup-tree", "idle", 1, -1, true)
 
   this.add.image(0, 0, 'stage').setOrigin(0);
 
   this.player = new Player(this, 256, 256)
-
-
   this.player.playAnim('player_idle')
+
+  this.powerup = null;
+
+  setInterval(() => {
+    if (this.powerup != null) {
+      this.powerup.sprite.destroy()
+    }
+
+    let choose = Math.floor(Math.random() * 100) % 2;
+    this.powerup = new Powerup(this, 30, 200, 20)
+  
+    if (choose == 0) {
+      this.powerup.playAnim('powerup-speed_idle')
+    }
+    else if (choose == 1) {
+      this.powerup.playAnim('powerup-strength_idle')
+    } 
+    this.powerup.state = choose
+    this.powerup.used = false
+  }, 20000);
 
   this.trees = []
   this.score = 0
   initTrees(this, 25)
   this.enemies = initEnemies(this, 4, this.trees)
   this.deadTrees = 0;
-
-  this.powerup = spawnPowerup(this)
 
   this.scoreText = this.add.text(3, 3, 'score: '+this.score, {
     font: '20px Bangers',
@@ -195,7 +209,6 @@ function update() {
       }
     )
     this.scoreText.setText("score: " + this.score);
-    this.powerup.update(this.player)
   }
 
   if (this.deadTrees == 25) {
@@ -207,5 +220,9 @@ function update() {
     }, 500);
     storeUser(this.score);
     this.deadTrees = 0;
+  }
+
+  if (this.powerup != null) {
+    this.powerup.update(this.player)
   }
 }

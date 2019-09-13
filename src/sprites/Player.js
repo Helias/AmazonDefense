@@ -6,6 +6,8 @@ export default class Player {
         // Sprite data
         this.sprite = ctx.add.sprite(x, y, 'player_idle_0')
 
+        this.damage = 50
+
         this.sprite.scaleX = 1.2
         this.sprite.scaleY = 1.2
 
@@ -44,12 +46,13 @@ export default class Player {
         let minDist = coordinates(0.15, 0).x
 
         let hit = false
+        let damage = this.damage;
 
         enemies.forEach(function(enemy) {
             if(enemy.active && 
               ((!flip && enemy.sprite.x < ctx.sprite.x) || (flip && enemy.sprite.x > ctx.sprite.x)) &&
                dist(ctx.sprite.x, ctx.sprite.y, enemy.sprite.x, enemy.sprite.y) <= minDist) {
-                enemy.hp -= 50
+                enemy.hp -= damage
                 enemy.speed = 0;
                 
                 hit = true
