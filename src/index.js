@@ -1,10 +1,11 @@
 import Phaser from "phaser";
 import Player from "./sprites/Player";
 import Tree from "./sprites/Tree"; 
+import Enemy from "./sprites/Enemy";
+import Powerup from "./sprites/Powerup";
 
 import { coordinates } from './utils'
 import { SETTINGS } from './settings'
-import Enemy from "./sprites/Enemy";
 
 const config = {
   type: Phaser.AUTO,
@@ -17,6 +18,8 @@ const config = {
     update: update
   }
 };
+
+let gameEnabled = false;
 
 const game = new Phaser.Game(config);
 
@@ -57,6 +60,8 @@ function registerAnimation(ctx, sprite, name, frames_count, repeat=0, yoyo=false
 }
 
 function preload() {
+  this.load.image("stage", "assets/stage.png") // background image
+
   loadAnimationSprites(this, "player", "idle", 20)
   loadAnimationSprites(this, "player", "walk", 16)
   loadAnimationSprites(this, "player", "attack", 28)
@@ -64,6 +69,7 @@ function preload() {
   loadAnimationSprites(this, "tree", "attack", 3)
   loadAnimationSprites(this, "enemy", "walk", 17)
   loadAnimationSprites(this, "enemy", "attack", 17)
+  loadAnimationSprites(this, "powerup-tree", "idle", 1)
 
   this.scene.scene.load.audio("background_song", "assets/audio/background_song.mp3")
   this.cameras.main.backgroundColor.setTo(255,255,255); 
@@ -95,7 +101,7 @@ function initTrees(ctx, count) {
 
 function initEnemies(ctx, count, trees) {
   let enemies = []
-  for(let i = 0; i <count; ++i){
+  for( let i = 0; i < count; ++i){
     let minPos = coordinates(0.02, -0.2)
     let maxPos = coordinates(0.98, -0.2)
 
@@ -113,6 +119,12 @@ function initEnemies(ctx, count, trees) {
   return enemies
 }
 
+function spawnPowerup(ctx) {
+  let powerup = new Powerup(ctx, 400, 400, 20)
+  powerup.playAnim('powerup-tree_idle')
+  return powerup
+}
+
 function create() {
   registerAnimation(this, "player", "idle", 11, -1, true, 10)
   registerAnimation(this, "player", "walk", 16, -1, true, 32)
@@ -121,6 +133,9 @@ function create() {
   registerAnimation(this, "tree", "attack", 1, -1, true)
   registerAnimation(this, "enemy", "walk", 17, -1, true,32)
   registerAnimation(this, "enemy", "attack", 17, -1, true,60)
+  registerAnimation(this, "powerup-tree", "idle", 1, -1, true)
+
+  this.add.image(0, 0, 'stage').setOrigin(0);
 
   this.player = new Player(this, 256, 256)
 
@@ -130,13 +145,15 @@ function create() {
   this.trees = []
   this.score = 0
   initTrees(this, 25)
-  this.enemies = initEnemies(this, 4, this.trees)
+  this.enemies = initEnemies(this, 20, this.trees)
+  this.deadTrees = 0;
+
+  this.powerup = spawnPowerup(this)
 
   this.scoreText = this.add.text(3, 3, 'score: '+this.score, {
     font: '20px Bangers',
-    fill: '#7744ff'
+    fill: '#fff'
   })
-
 
   var backgroundMusic = this.scene.scene.sound.add("background_song", {
     mute: false,
@@ -153,12 +170,23 @@ function create() {
 }
 
 function update() {
-  this.player.update(this)
+  gameEnabled = document.getElementById("player-init").value == 1;
+  if (gameEnabled) {
+    this.player.update(this)
+    this.enemies.forEach((enemy) => {
+        enemy.update(this, 0.98)
+      }
+    )
+    this.scoreText.setText("score: " + this.score);
+    this.powerup.update(this.player)
+  }
 
-  this.enemies.forEach((enemy) => {
-      enemy.update(this, 0.98)
-    }
-  )
-
-  this.scoreText.setText("score: " + this.score);
+  if (this.deadTrees == 25) {
+    setTimeout(() => {
+      let instance = M.Modal.getInstance(document.getElementsByClassName("modal")[0]);
+      instance.destroy();
+      setTimeout(() => { document.getElementById("checkgame").checked = true; }, 1000);
+      setTimeout(() => { document.getElementById("arrow").className =  document.getElementById("arrow").className.replace("brown", ""); }, 1500);
+    }, 500);
+  }
 }

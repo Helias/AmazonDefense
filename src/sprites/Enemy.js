@@ -4,7 +4,7 @@ import { SETTINGS } from '../settings'
 export default class Enemy {
     constructor(ctx, x, y, depth, trees) {
         this.sprite = ctx.add.sprite(x, y)
-        this.sprite.depth = depth
+        // this.sprite.depth = depth
 
         this.speedMax = coordinates(0, 0.0055).y
         this.speed = this.speedMax;
@@ -17,8 +17,8 @@ export default class Enemy {
         this.active = false
         this.hp = 100
         this.trees = trees; 
-        this.deadTrees = 0;
         this.target = null; 
+        this.ctx = ctx;
 
         this.stateAttack = false
         this.soundAttackTimer = null
@@ -134,7 +134,8 @@ export default class Enemy {
             return true;
         }
          //attck tree
-        if (this.target != null && this.target.hp > 0 && this.deadTrees <= 25) {
+        if (this.target != null && this.target.hp > 0) {
+            this.attackTree();
 
             if (!this.stateAttack) {
                 this.playAnim("enemy_attack")
@@ -169,9 +170,9 @@ export default class Enemy {
         if (this.target == null || this.target.hp <= 0) {
             this.target.sprite.destroy();
             this.target.isDead = true
-            this.deadTrees++;
             this.target = null;
             this.resetAttackPhase()
+            this.ctx.deadTrees++;
         }
     }
 

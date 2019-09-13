@@ -1,6 +1,6 @@
 export const SETTINGS = {
-    canvasWidth: 600,
-    canvasHeight: 900,
+    canvasWidth: 800,
+    canvasHeight: 500,
     hitSounds: 4,
     lowhitSounds: 2
 }

@@ -43,5 +43,26 @@ body {
     width: 50%; 
 }
 
-.modal { width: 900px !important ; height: 600px !important ; }
+.modal {
+    width: 810px !important;
+    height: 510px !important;
+}
 
+.modal-content, .modal {
+    padding: 0px !important;    
+    background-color: transparent !important;
+}
+
+#toast-container {
+    top: 10px !important;
+    right: auto !important;
+    margin: 0 auto;
+    width: 100% !important;
+    text-align: center;
+    left: 7%;
+}
+
+.toast {
+    margin: 0 auto !important;
+    width: 600px !important;
+}

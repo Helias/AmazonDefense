@@ -50,7 +50,7 @@
                         <div class="input-field">
                             <div class="fake-captcha">
                                 <label>
-                                    <input data-target="modal1" type="checkbox" class="filled-in modal-trigger" onclick="initGame()"/>
+                                    <input data-target="modal1" type="checkbox" class="filled-in modal-trigger" onclick="initGame()" id="checkgame">
                                     <span style="float: left; margin-top: 10px">I'm not a robot</span>
                                     <div style="text-align: right">
                                         <img src="frontend/media/reCaptcha.png" style="text-align:right; width: 35px" alt="">
@@ -61,7 +61,7 @@
 
                         <!-- submit -->
                         <div style="text-align: center">
-                            <a class="btn-floating btn-large waves-effect waves-light brown lighten-2">
+                            <a class="btn-floating btn-large waves-effect waves-light brown lighten-2" id="arrow">
                                     <i class="material-icons right">send</i>
                             </a>
                         </div>
@@ -70,7 +70,6 @@
                         <!-- Modal Structure -->
                           <div id="modal1" class="modal">
                               <div class="modal-content">
-                              <h4>Then show me!</h4>
                                 <div id="gameCanvas"></div>
                             </div>
                           </div>
@@ -85,17 +84,42 @@
 
     <!-- !--JavaScript at end of body for optimized loading--> 
     <script src="frontend/materialize/js/materialize.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <input type="hidden" value="0" id="player-init">
     <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                var elems = document.querySelectorAll('.modal');
-                var instances = M.Modal.init(elems);
+            let options = {
+                dismissible: true,
+                onCloseEnd: () => {
+                    document.getElementById("player-init").value = 0;
+                }
+            };
+            document.addEventListener('DOMContentLoaded', () => {
+                let elems = document.querySelectorAll('.modal');
+                let instances = M.Modal.init(elems, options);
             });
 
+            // setTimeout(() => {
+            //     let instance = M.Modal.getInstance(document.getElementsByClassName("modal")[0]);
+            //     instance.close()
+            // }, 3000);
+
+            // <h4>Then show me!</h4>
+
+            document.getElementById("checkgame").checked = false;
+
             function initGame() {
-                document.addEventListener('DOMContentLoaded', function() {
-                    var elems = document.querySelectorAll('.modal');
-                    var instances = M.Modal.init(elems);
-                });
+                document.getElementById("player-init").value = 1;
+                M.toast({
+                    html: '<b style="font-size: 28px;">Allora dimostramelo, salva gli alberi!</b>',
+                    displayLength: 2000,
+                    completeCallback: () => { M.toast({
+                        html: '<b style="font-size: 28px;">Utilizza le frecce direzionali per muoverti ←↑→↓</b>',
+                        displayLength: 2000,
+                        completeCallback: () => {
+                            M.toast({ html: '<b style="font-size: 28px;">Utilizza spazio <sub><i class="material-icons">space_bar</i></sub> per colpire i nemici</b>', displayLength: 2000 })
+                        }
+                    }) }
+                })
             }
 
     </script>
