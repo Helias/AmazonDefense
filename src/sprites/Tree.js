@@ -4,10 +4,12 @@ export default class Tree {
         this.sprite.depth = depth
         this.hp = 100
         this.isDead = false
+        this.state = 1
     }
 
     playAnim(animId) {
-        this.sprite.play(animId); 
+        this.sprite.play(animId);
     }
+
 
 }

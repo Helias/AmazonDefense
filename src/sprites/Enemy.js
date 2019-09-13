@@ -89,6 +89,7 @@ export default class Enemy {
     }
 
     respawn() {
+        this.resetAttackPhase()
         this.active = false
         this.sprite.y = this.minY;
         this.sprite.x = this.ALGORITMODELRITMO(); 
@@ -165,14 +166,37 @@ export default class Enemy {
 
     attackTree() {
         this.target.hp -= 1;
-    
+       // if (this.target.hp == 75 || this.target.hp == 50 || this.target.hp == 25){
+         // this.playAnim("tree_attack")
+        //}
+        
+        if(this.target.hp <= 100 && this.target.hp > 75){
+         
+                this.target.playAnim("tree_fermo1")
+            
+        }
+        else if(this.target.hp <= 75 && this.target.hp > 50){
+        
+                this.target.playAnim("tree_fermo2")
+          
+        }
+        else if(this.target.hp <= 50 && this.target.hp > 25){
+       
+                this.target.playAnim("tree_fermo3")
+         
+        }
+        else if(this.target.hp <= 25 && this.target.hp > 0){
+                this.target.playAnim("tree_fermo4")
+            
+        }
 
         if (this.target == null || this.target.hp <= 0) {
-            this.target.sprite.destroy();
-            this.target.isDead = true
-            this.target = null;
-            this.resetAttackPhase()
+            
+           this.target.sprite.destroy();
+            //this.target.isDead = true
+           // this.resetAttackPhase()
             this.ctx.deadTrees++;
+            this.target = null;
         }
     }
 

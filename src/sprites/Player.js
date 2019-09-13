@@ -68,7 +68,7 @@ export default class Player {
 
     update(ctx) {
 
-
+        let isY = null;
         if (this.keyAttack.isDown
         || this.keyMoveForward.isDown
         || this.keyMoveBackward.isDown
@@ -91,20 +91,31 @@ export default class Player {
                 this.speed.x = this.maxSpeed.x
                 this.speed.y = this.maxSpeed.y
             }
-
+           
+            let isDown = null;
             if(this.keyMoveForward.isDown) {
                 this.sprite.y -= this.speed.y
-
+                isY = true;
+                isDown = false;
+                
             } else if(this.keyMoveBackward.isDown) {
+                
                 this.sprite.y += this.speed.y
+                isY = true;
+                isDown =true;
+                
             }
             
             if(this.keyMoveRight.isDown) {
                 this.sprite.x += this.speed.x
+                isY = false;
+                
                 // this.sprite.x += this.sprite.flipX ? 0 : -10 
                 this.sprite.flipX = true
             } else if(this.keyMoveLeft.isDown) {
                 this.sprite.x -= this.speed.x
+                isY = false;
+                
                 // this.sprite.x += this.sprite.flipX ? -10 : 0
                 this.sprite.flipX = false
             }
@@ -112,11 +123,24 @@ export default class Player {
             if (this.keyAttack.isDown) {
                 this.playAnim("player_attack")
             } else {
-                this.playAnim("player_walk")
+                if(isY == true) { 
+                    if(isDown)   this.playAnim("player_walkDown")
+                    else this.playAnim("player_walkUp")
+                }
+                else {
+                    this.playAnim("player_walk")
+                }
             }
         }
         else {
-            this.playAnim("player_idle")
+            if(isY == true) { 
+                if(isDown) { this.playAnim("player_idleUp")}
+                else {this.playAnim("player_idleUp")}
+            }
+            else {
+                this.playAnim("player_idle")
+            }
+            
         }
 
         if(this.attackCooldown > 0)
