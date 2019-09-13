@@ -67,10 +67,18 @@ function preload() {
   this.load.image("stage", "assets/stage.png") // background image
 
   loadAnimationSprites(this, "player", "idle", 20)
+  loadAnimationSprites(this, "player", "idleUp", 20)
   loadAnimationSprites(this, "player", "walk", 16)
   loadAnimationSprites(this, "player", "attack", 28)
+  loadAnimationSprites(this, "player", "walkDown", 16)
+  loadAnimationSprites(this, "player", "walkUp", 16)
   loadAnimationSprites(this, "tree", "idle", 7)
   loadAnimationSprites(this, "tree", "attack", 3)
+  loadAnimationSprites(this, "tree", "fermo1", 1)
+  loadAnimationSprites(this, "tree", "fermo2", 1)
+  loadAnimationSprites(this, "tree", "fermo3", 1)
+  loadAnimationSprites(this, "tree", "fermo4", 1)
+  loadAnimationSprites(this, "tree", "idle", 18)
   loadAnimationSprites(this, "enemy", "walk", 17)
   loadAnimationSprites(this, "enemy", "attack", 17)
   loadAnimationSprites(this, "powerup-speed", "idle", 1)
@@ -99,7 +107,7 @@ function initTrees(ctx, count) {
     let y = Math.random() * (maxPos.y - minPos.y) + minPos.y
 
     let tree = new Tree(ctx, x, y, y)
-    tree.playAnim('tree_idle')
+    tree.playAnim('tree_fermo1')
 
     ctx.trees.push(tree)
   }
@@ -126,11 +134,20 @@ function initEnemies(ctx, count, trees) {
 }
 
 function create() {
-  registerAnimation(this, "player", "idle", 11, -1, true, 10)
+  registerAnimation(this, "player", "idle", 20, -1, true, 20)
+  registerAnimation(this, "player", "idleUp", 20, -1, true, 20)
   registerAnimation(this, "player", "walk", 16, -1, true, 32)
+  registerAnimation(this, "player", "walkDown", 16, -1, true, 32)
+  registerAnimation(this, "player", "walkUp", 16, -1, true, 32)
   registerAnimation(this, "player", "attack", 28, -1, true, 60)
-  registerAnimation(this, "tree", "idle", 1, -1, true)
-  registerAnimation(this, "tree", "attack", 1, -1, true)
+  
+  registerAnimation(this, "tree", "idle", 18, -1, true,60)
+  registerAnimation(this, "tree", "attack", 4, -1, true,5)
+  registerAnimation(this, "tree", "fermo1", 1, -1, true)
+  registerAnimation(this, "tree", "fermo2", 1, -1, true)
+  registerAnimation(this, "tree", "fermo3", 1, -1, true)
+  registerAnimation(this, "tree", "fermo4", 1, -1, true)
+  registerAnimation(this, "tree", "idle", 18, -1, true,20)
   registerAnimation(this, "enemy", "walk", 17, -1, true,32)
   registerAnimation(this, "enemy", "attack", 17, -1, true,60)
   registerAnimation(this, "powerup-speed", "idle", 1, -1, true)
@@ -209,6 +226,11 @@ function update() {
       }
     )
     this.scoreText.setText("score: " + this.score);
+  }
+  else {
+    for (let i = 0; i < this.enemies.length; i++) {
+      this.enemies[i].resetAttackPhase()
+    }
   }
 
   if (this.deadTrees == 25) {
