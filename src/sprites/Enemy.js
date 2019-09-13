@@ -6,7 +6,7 @@ export default class Enemy {
         this.sprite = ctx.add.sprite(x, y)
         // this.sprite.depth = depth
 
-        this.speedMax = coordinates(0, 0.0055).y
+        this.speedMax = coordinates(0, 0.0025).y
         this.speed = this.speedMax;
 
         this.minY = coordinates(0, -0.1).y

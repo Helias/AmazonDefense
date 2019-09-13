@@ -145,7 +145,7 @@ function create() {
   this.trees = []
   this.score = 0
   initTrees(this, 25)
-  this.enemies = initEnemies(this, 20, this.trees)
+  this.enemies = initEnemies(this, 4, this.trees)
   this.deadTrees = 0;
 
   this.powerup = spawnPowerup(this)
