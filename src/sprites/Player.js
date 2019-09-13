@@ -37,7 +37,8 @@ export default class Player {
         this.attackCooldown = 0
         this.maxAttackCooldown = 25
 
-        
+        this.isY = null;
+        this.isDown = null;
     }
 
 
@@ -71,7 +72,7 @@ export default class Player {
 
     update(ctx) {
 
-        let isY = null;
+
         if (this.keyAttack.isDown
         || this.keyMoveForward.isDown
         || this.keyMoveBackward.isDown
@@ -95,29 +96,28 @@ export default class Player {
                 this.speed.y = this.maxSpeed.y
             }
            
-            let isDown = null;
             if(this.keyMoveForward.isDown) {
                 this.sprite.y -= this.speed.y
-                isY = true;
-                isDown = false;
+                this.isY = true;
+                this.isDown = false;
                 
             } else if(this.keyMoveBackward.isDown) {
                 
                 this.sprite.y += this.speed.y
-                isY = true;
-                isDown =true;
+                this.isY = true;
+                this.isDown = true;
                 
             }
             
             if(this.keyMoveRight.isDown) {
                 this.sprite.x += this.speed.x
-                isY = false;
+                this.isY = false;
                 
                 // this.sprite.x += this.sprite.flipX ? 0 : -10 
                 this.sprite.flipX = true
             } else if(this.keyMoveLeft.isDown) {
                 this.sprite.x -= this.speed.x
-                isY = false;
+                this.isY = false;
                 
                 // this.sprite.x += this.sprite.flipX ? -10 : 0
                 this.sprite.flipX = false
@@ -126,8 +126,8 @@ export default class Player {
             if (this.keyAttack.isDown) {
                 this.playAnim("player_attack")
             } else {
-                if(isY == true) { 
-                    if(isDown)   this.playAnim("player_walkDown")
+                if(this.isY == true) { 
+                    if(this.isDown)   this.playAnim("player_walkDown")
                     else this.playAnim("player_walkUp")
                 }
                 else {
@@ -136,9 +136,9 @@ export default class Player {
             }
         }
         else {
-            if(isY == true) { 
-                if(isDown) { this.playAnim("player_idleUp")}
-                else {this.playAnim("player_idleUp")}
+            if(this.isY == true) { 
+                if(this.isDown) { this.playAnim("player_idle")}
+                else {this.playAnim("player_idleUp")} // TODO: Add idleDown animation
             }
             else {
                 this.playAnim("player_idle")

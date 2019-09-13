@@ -181,8 +181,8 @@ function create() {
 
   this.trees = []
   this.score = 0
-  initTrees(this, 25)
-  this.enemies = initEnemies(this, 4, this.trees)
+  initTrees(this, 15)
+  this.enemies = initEnemies(this, 8, this.trees)
   this.deadTrees = 0;
 
   this.scoreText = this.add.text(3, 3, 'score: '+this.score, {
@@ -190,7 +190,7 @@ function create() {
     fill: '#fff'
   })
 
-  var backgroundMusic = this.scene.scene.sound.add("background_song", {
+  this.backgroundMusic = this.scene.scene.sound.add("background_song", {
     mute: false,
     volume: 1,
     rate: 1,
@@ -201,7 +201,9 @@ function create() {
   })
 
   // TODO: ENABLE IN RELEASE!
-  backgroundMusic.play()
+  // this.backgroundMusic.play()
+
+  this.spawnDifficulty = 0.99
 }
 
 function storeUser(score) {
@@ -219,13 +221,23 @@ function storeUser(score) {
 
 function update() {
   gameEnabled = document.getElementById("player-init").value == 1;
+
   if (gameEnabled) {
+    if(!this.backgroundMusic.isPlaying) {
+      this.backgroundMusic.play()
+    }
+
     this.player.update(this)
     this.enemies.forEach((enemy) => {
-        enemy.update(this, 0.98)
+        enemy.update(this, this.spawnDifficulty)
       }
     )
     this.scoreText.setText("score: " + this.score);
+
+    if(this.spawnDifficulty > 0.98)
+      this.spawnDifficulty -= 0.00001
+
+    console.log(this.spawnDifficulty)
   }
   else {
     for (let i = 0; i < this.enemies.length; i++) {
@@ -233,7 +245,7 @@ function update() {
     }
   }
 
-  if (this.deadTrees == 25) {
+  if (this.deadTrees >= 15) {
     setTimeout(() => {
       let instance = M.Modal.getInstance(document.getElementsByClassName("modal")[0]);
       instance.destroy();
