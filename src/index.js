@@ -66,10 +66,13 @@ function registerAnimation(ctx, sprite, name, frames_count, repeat=0, yoyo=false
 function preload() {
   this.load.image("stage", "assets/stage.png") // background image
 
-  loadAnimationSprites(this, "player", "idle", 11)
-  loadAnimationSprites(this, "player", "walk", 17)
-  loadAnimationSprites(this, "tree", "idle", 1)
-  loadAnimationSprites(this, "enemy", "idle", 1)
+  loadAnimationSprites(this, "player", "idle", 20)
+  loadAnimationSprites(this, "player", "walk", 16)
+  loadAnimationSprites(this, "player", "attack", 28)
+  loadAnimationSprites(this, "tree", "idle", 7)
+  loadAnimationSprites(this, "tree", "attack", 3)
+  loadAnimationSprites(this, "enemy", "walk", 17)
+  loadAnimationSprites(this, "enemy", "attack", 17)
   loadAnimationSprites(this, "powerup-tree", "idle", 1)
 
   this.scene.scene.load.audio("background_song", "assets/audio/background_song.mp3")
@@ -112,7 +115,7 @@ function initEnemies(ctx, count, trees) {
     // console.log(`Spawning enemy at ${x} ${y}`)
 
     let enemy = new Enemy(ctx, x, y, y, trees)
-    enemy.playAnim('enemy_idle')
+    enemy.playAnim('enemy_walk')
 
     enemies.push(enemy)
   }
@@ -128,20 +131,25 @@ function spawnPowerup(ctx) {
 
 function create() {
   registerAnimation(this, "player", "idle", 11, -1, true, 10)
-  registerAnimation(this, "player", "walk", 17, -1, true, 32)
+  registerAnimation(this, "player", "walk", 16, -1, true, 32)
+  registerAnimation(this, "player", "attack", 28, -1, true, 60)
   registerAnimation(this, "tree", "idle", 1, -1, true)
-  registerAnimation(this, "enemy", "idle", 1, -1, true)
+  registerAnimation(this, "tree", "attack", 1, -1, true)
+  registerAnimation(this, "enemy", "walk", 17, -1, true,32)
+  registerAnimation(this, "enemy", "attack", 17, -1, true,60)
   registerAnimation(this, "powerup-tree", "idle", 1, -1, true)
 
   this.add.image(0, 0, 'stage').setOrigin(0);
 
   this.player = new Player(this, 256, 256)
+
+
   this.player.playAnim('player_idle')
 
   this.trees = []
   this.score = 0
   initTrees(this, 25)
-  this.enemies = initEnemies(this, 20, this.trees)
+  this.enemies = initEnemies(this, 4, this.trees)
   this.deadTrees = 0;
 
   this.powerup = spawnPowerup(this)
