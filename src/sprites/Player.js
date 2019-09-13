@@ -34,6 +34,8 @@ export default class Player {
         // Attack cooldown
         this.attackCooldown = 0
         this.maxAttackCooldown = 25
+
+        
     }
 
 
@@ -49,6 +51,7 @@ export default class Player {
                dist(ctx.sprite.x, ctx.sprite.y, enemy.sprite.x, enemy.sprite.y) <= minDist) {
                 enemy.hp -= 50
                 enemy.speed = 0;
+                
                 hit = true
             }
         })
@@ -59,48 +62,61 @@ export default class Player {
     }
 
     playAnim(animId) {
-        if(this.sprite.anims.currentAnim == null || this.sprite.anims.currentAnim.key != animId)
+          if(this.sprite.anims.currentAnim == null || this.sprite.anims.currentAnim.key != animId)
             this.sprite.play(animId)
     }
 
     update(ctx) {
-        // Controls
-        if(this.keyAttack.isDown) {
-            this.speed.x = clamp(this.speed.x, 0, this.maxSpeed.x * 0.5)
-            this.speed.y = clamp(this.speed.y, 0, this.maxSpeed.y * 0.5)
 
-            if(this.attackCooldown == 0) {
-                let hit = this.attack(ctx.enemies, this.sprite.flipX)
 
-                if(hit) {
-                    let hitSoundId = Math.trunc((this.sprite.x + this.sprite.y) % this.hitSounds.length)
+        if (this.keyAttack.isDown
+        || this.keyMoveForward.isDown
+        || this.keyMoveBackward.isDown
+        || this.keyMoveRight.isDown
+        || this.keyMoveLeft.isDown) {
+            // Controls
+            if(this.keyAttack.isDown) {
+                this.speed.x = clamp(this.speed.x, 0, this.maxSpeed.x * 0.5)
+                this.speed.y = clamp(this.speed.y, 0, this.maxSpeed.y * 0.5)
+                if(this.attackCooldown == 0) {
+                    let hit = this.attack(ctx.enemies, this.sprite.flipX)
 
-                    this.hitSounds[hitSoundId].play()
+                    if(hit) {
+                        let hitSoundId = Math.trunc((this.sprite.x + this.sprite.y) % this.hitSounds.length)
+
+                        this.hitSounds[hitSoundId].play()
+                    }
                 }
+            } else {
+                this.speed.x = this.maxSpeed.x
+                this.speed.y = this.maxSpeed.y
             }
-        } else {
-            this.speed.x = this.maxSpeed.x
-            this.speed.y = this.maxSpeed.y
-        }
 
-        this.playAnim("player_idle")
+            if(this.keyMoveForward.isDown) {
+                this.sprite.y -= this.speed.y
 
-        if(this.keyMoveForward.isDown) {
-            this.sprite.y -= this.speed.y
-            this.playAnim("player_walk")
-        } else if(this.keyMoveBackward.isDown) {
-            this.sprite.y += this.speed.y
-            this.playAnim("player_walk")
+            } else if(this.keyMoveBackward.isDown) {
+                this.sprite.y += this.speed.y
+            }
+            
+            if(this.keyMoveRight.isDown) {
+                this.sprite.x += this.speed.x
+                // this.sprite.x += this.sprite.flipX ? 0 : -10 
+                this.sprite.flipX = true
+            } else if(this.keyMoveLeft.isDown) {
+                this.sprite.x -= this.speed.x
+                // this.sprite.x += this.sprite.flipX ? -10 : 0
+                this.sprite.flipX = false
+            }
+
+            if (this.keyAttack.isDown) {
+                this.playAnim("player_attack")
+            } else {
+                this.playAnim("player_walk")
+            }
         }
-        
-        if(this.keyMoveRight.isDown) {
-            this.sprite.x += this.speed.x
-            this.sprite.flipX = true
-            this.playAnim("player_walk")
-        } else if(this.keyMoveLeft.isDown) {
-            this.sprite.x -= this.speed.x
-            this.sprite.flipX = false
-            this.playAnim("player_walk")
+        else {
+            this.playAnim("player_idle")
         }
 
         if(this.attackCooldown > 0)

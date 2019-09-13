@@ -6,7 +6,7 @@ export default class Enemy {
         this.sprite = ctx.add.sprite(x, y)
         this.sprite.depth = depth
 
-        this.speedMax = coordinates(0, 0.0025).y
+        this.speedMax = coordinates(0, 0.0055).y
         this.speed = this.speedMax;
 
         this.minY = coordinates(0, -0.1).y
@@ -19,6 +19,9 @@ export default class Enemy {
         this.trees = trees; 
         this.deadTrees = 0;
         this.target = null; 
+
+        this.stateAttack = false
+        this.soundAttackTimer = null
 
         var scene = ctx.scene.scene
 
@@ -33,27 +36,41 @@ export default class Enemy {
         this.sprite.play(animId); 
     }
 
+    resetAttackPhase() {
+        this.stateAttack = false
+        this.playAnim("enemy_walk")
+        clearInterval(this.soundAttackTimer)
+    }
+
     update(ctx, spawnDifficulty) {
+        
         if (this.active) {
+            
             // respawn the enemy
             if (this.hp <= 0) {
                 ctx.score++;
                 this.respawn();
             }
-
+           
             if (this.sprite.y >= this.triggerY) {
                 this.speed = this.speedMax * 0.5
 
                 if (this.target == null || this.target.hp <= 0 || this.target.isDead) {
+                    this.resetAttackPhase()
                     this.target = this.getNearestTree();
                 }
 
                 if (this.target != null && this.target.hp > 0) {
+                    
                     this.walkToTarget();
+                } else {
+                    this.resetAttackPhase()
                 }
 
             } else {
+                
                 this.sprite.y += this.speed
+               
             }
 
             
@@ -61,6 +78,7 @@ export default class Enemy {
             if(this.speed < this.speedMax){
                 this.speed += 0.05
             }
+            
         } else {
             if(Math.random() > spawnDifficulty) {
                 this.active = true
@@ -97,6 +115,7 @@ export default class Enemy {
     walkToTarget() {
 
          if (this.target == null || this.target.hp <= 0 || !this.isNear(this.target)) {
+
             let xDiff = this.sprite.x - this.target.sprite.x
             let yDiff = this.sprite.y - this.target.sprite.y
 
@@ -116,10 +135,16 @@ export default class Enemy {
         }
          //attck tree
         if (this.target != null && this.target.hp > 0 && this.deadTrees <= 25) {
-            this.attackTree();
 
-            let lowhitSoundId = Math.trunc((this.sprite.x + this.sprite.y) % this.lowhitSounds.length)
-            this.lowhitSounds[lowhitSoundId].play()
+            if (!this.stateAttack) {
+                this.playAnim("enemy_attack")
+                this.stateAttack = true
+                this.soundAttackTimer = setInterval(() => {
+                    let lowhitSoundId = Math.trunc((this.sprite.x + this.sprite.y) % this.lowhitSounds.length)
+                    this.lowhitSounds[lowhitSoundId].play()
+                }, 600);
+            }
+            this.attackTree();
         }
         
         return false;
@@ -127,6 +152,8 @@ export default class Enemy {
 
     isNear(tree) {
         return dist(this.sprite.x, this.sprite.y, tree.sprite.x, tree.sprite.y) < 10;  
+        
+       
     }
 
     ALGORITMODELRITMO() {
@@ -137,15 +164,16 @@ export default class Enemy {
 
     attackTree() {
         this.target.hp -= 1;
-
-        //animazione dell'albero ...
+    
 
         if (this.target == null || this.target.hp <= 0) {
             this.target.sprite.destroy();
             this.target.isDead = true
             this.deadTrees++;
             this.target = null;
+            this.resetAttackPhase()
         }
-
     }
+
+
 }

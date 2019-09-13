@@ -57,10 +57,13 @@ function registerAnimation(ctx, sprite, name, frames_count, repeat=0, yoyo=false
 }
 
 function preload() {
-  loadAnimationSprites(this, "player", "idle", 11)
-  loadAnimationSprites(this, "player", "walk", 17)
-  loadAnimationSprites(this, "tree", "idle", 1)
-  loadAnimationSprites(this, "enemy", "idle", 1)
+  loadAnimationSprites(this, "player", "idle", 20)
+  loadAnimationSprites(this, "player", "walk", 16)
+  loadAnimationSprites(this, "player", "attack", 28)
+  loadAnimationSprites(this, "tree", "idle", 7)
+  loadAnimationSprites(this, "tree", "attack", 3)
+  loadAnimationSprites(this, "enemy", "walk", 17)
+  loadAnimationSprites(this, "enemy", "attack", 17)
 
   this.scene.scene.load.audio("background_song", "assets/audio/background_song.mp3")
   this.cameras.main.backgroundColor.setTo(255,255,255); 
@@ -102,7 +105,7 @@ function initEnemies(ctx, count, trees) {
     // console.log(`Spawning enemy at ${x} ${y}`)
 
     let enemy = new Enemy(ctx, x, y, y, trees)
-    enemy.playAnim('enemy_idle')
+    enemy.playAnim('enemy_walk')
 
     enemies.push(enemy)
   }
@@ -112,11 +115,16 @@ function initEnemies(ctx, count, trees) {
 
 function create() {
   registerAnimation(this, "player", "idle", 11, -1, true, 10)
-  registerAnimation(this, "player", "walk", 17, -1, true, 32)
+  registerAnimation(this, "player", "walk", 16, -1, true, 32)
+  registerAnimation(this, "player", "attack", 28, -1, true, 60)
   registerAnimation(this, "tree", "idle", 1, -1, true)
-  registerAnimation(this, "enemy", "idle", 1, -1, true)
+  registerAnimation(this, "tree", "attack", 1, -1, true)
+  registerAnimation(this, "enemy", "walk", 17, -1, true,32)
+  registerAnimation(this, "enemy", "attack", 17, -1, true,60)
 
   this.player = new Player(this, 256, 256)
+
+
   this.player.playAnim('player_idle')
 
   this.trees = []
