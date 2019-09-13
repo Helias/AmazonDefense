@@ -201,7 +201,7 @@ function create() {
   })
 
   // TODO: ENABLE IN RELEASE!
-  // backgroundMusic.play()
+  backgroundMusic.play()
 }
 
 function storeUser(score) {
