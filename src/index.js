@@ -20,6 +20,10 @@ const config = {
 };
 
 let gameEnabled = false;
+let myStorage = window.localStorage;
+
+myStorage['data'] = myStorage['data'] ? myStorage['data'] : '{}';
+myStorage['users'] = myStorage['users'] ? myStorage['users'] : '0';
 
 const game = new Phaser.Game(config);
 
@@ -161,6 +165,19 @@ function create() {
   // backgroundMusic.play()
 }
 
+function storeUser(score) {
+  let userJson = myStorage['data']; 
+  userJson = JSON.parse(userJson);
+  let i = parseInt(myStorage['users']); 
+  userJson[i] = {
+    'firstName' : document.getElementById("first_name").value, 
+    'lastName' : document.getElementById("last_name").value,
+    'score' : score,
+  };
+  myStorage['data'] = JSON.stringify(userJson);
+  myStorage['users'] = (++i).toString(); 
+}
+
 function update() {
   gameEnabled = document.getElementById("player-init").value == 1;
   if (gameEnabled) {
@@ -180,5 +197,7 @@ function update() {
       setTimeout(() => { document.getElementById("checkgame").checked = true; }, 1000);
       setTimeout(() => { document.getElementById("arrow").className =  document.getElementById("arrow").className.replace("brown", ""); }, 1500);
     }, 500);
+    storeUser(this.score);
+    this.deadTrees = 0;
   }
 }

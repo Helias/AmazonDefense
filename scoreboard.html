@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>AmazonDefence</title>
+
+    <!-- own css -->
+    <link rel="stylesheet" href="frontend/css/style.css">
+
+    <!-- css libraries -->
+    <link type="text/css" rel="stylesheet" href="frontend/materialize/css/materialize.css"  media="screen,projection"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body>
+    
+    <nav style="opacity: 0.9">
+        <div class="nav-wrapper teal" style="display: block; align-items: baseline; margin: 0 auto;">
+                <img src="frontend/media/icon.png" alt="" style="margin: 0 auto; padding-top: 8px; display: block; width: 50px; "></img>
+        </div>
+    </nav>  
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col s2"></div>
+            <div class="col s8 formbox">
+                <div class="card-panel teal">
+                    <div class="content">
+
+                        <div class="title">Scoreboard</div>
+                        
+                        <table class="highlight" id="scoreboard" style="color: #ededed;">
+                            <thead>
+                              <tr>
+                                  <th>First name</th>
+                                  <th>Last name</th>
+                                  <th>Score</th>
+                              </tr>
+                            </thead>
+                    
+                            <tbody>
+                              <!-- ci saranno i dati, promesso -->
+                            </tbody>
+                          </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col s2"></div>
+        </div>
+    </div>
+
+    <!-- !--JavaScript at end of body for optimized loading--> 
+    <script src="frontend/materialize/js/materialize.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+      function predicateBy(prop){
+        return function(a,b){
+            if( a[prop] < b[prop]){
+                return 1;
+            }else if( a[prop] > b[prop] ){
+                return -1;
+            }
+            return 0;
+        }
+      }
+      let myStorage = window.localStorage;
+
+      if (myStorage['data'] == null) {
+        window.location.href='https://i.ytimg.com/vi/HcbBjbwzTxk/hqdefault.jpg'; 
+      }
+      
+      let json = JSON.parse(myStorage['data']); 
+      
+      let users = [];
+
+      for (let i in json) {
+        users[i] = {
+          'firstName' : json[i].firstName,  
+          'lastName' : json[i].lastName, 
+          'score' : json[i].score
+        };
+      }
+
+      //for (let i = 0;  )
+
+      
+      //Usage
+      users.sort( predicateBy("score"));
+
+      for (let i in users) {
+        var table = document.getElementById("scoreboard");
+        // Create an empty <tr> element and add it to the 1st position of the table:
+        var row = table.insertRow(parseInt(i)+1);
+
+        // Insert new cells (<td> elements) at the 1st and 2nd position of the "new" <tr> element:
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+        var cell3 = row.insertCell(2);
+
+        // Add some text to the new cells:
+        cell1.innerHTML = users[i].firstName;
+        cell2.innerHTML = users[i].lastName; 
+        cell3.innerHTML = users[i].score; 
+      }
+    
+    </script>
+    <input type="hidden" value="0" id="player-init">
+</body>
+</html>
+
+

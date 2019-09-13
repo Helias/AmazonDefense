@@ -61,7 +61,7 @@
 
                         <!-- submit -->
                         <div style="text-align: center">
-                            <a class="btn-floating btn-large waves-effect waves-light brown lighten-2" id="arrow">
+                            <a class="btn-floating btn-large waves-effect waves-light brown lighten-2" href="scoreboard.html" id="arrow">
                                     <i class="material-icons right">send</i>
                             </a>
                         </div>
@@ -87,6 +87,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <input type="hidden" value="0" id="player-init">
     <script>
+
             let options = {
                 dismissible: true,
                 onCloseEnd: () => {
@@ -97,13 +98,6 @@
                 let elems = document.querySelectorAll('.modal');
                 let instances = M.Modal.init(elems, options);
             });
-
-            // setTimeout(() => {
-            //     let instance = M.Modal.getInstance(document.getElementsByClassName("modal")[0]);
-            //     instance.close()
-            // }, 3000);
-
-            // <h4>Then show me!</h4>
 
             document.getElementById("checkgame").checked = false;
 
