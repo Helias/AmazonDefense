@@ -5,6 +5,7 @@ body {
     /* font-family: 'Shadows Into Light', cursive; */
     font-family: 'PT Sans', sans-serif;
     background-image: url("../media/background4.gif"); 
+    background-color: #232323; 
     background-repeat: no-repeat; 
     background-size: cover; 
     margin: 0; 
