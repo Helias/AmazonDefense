@@ -1,6 +1,6 @@
 ## Amazon Defense
 
-[Live Demo](https://helias.github.io/AmazonDefense)
+## [Play the game!](https://helias.github.io/AmazonDefense)
 
 AmazonDefense, game by "Segmentation Fault", team of the "University Game Jam" in Catania
 
